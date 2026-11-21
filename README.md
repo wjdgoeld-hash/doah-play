@@ -1,28 +1,31 @@
-# Doah Play v0.1
+# Doah Play v0.2
 
-A private, ad-free, Korean-first toddler play application. Runs as a progressive web app (PWA) on iPad and Android.
+도아(31개월)의 부모 관리형 유아 놀이 앱 프로토타입입니다. **광고, 자동재생, 로그인, 사용자 데이터 전송이 없습니다.**
 
-## Features
-- Finger painting with seven colors and erase
-- Picture matching with 12 animal icons
-- 20 bilingual picture-word cards with Korean device text-to-speech
-- Three simple original stories (nine illustrated emoji pages), read-aloud
-- Parent gate (simple arithmetic) and per-session time limit
-- Offline caching through service worker (requires first load over HTTPS)
+## 새 기능
+- 자유 그림 그리기, 직선/동그라미/물결/지그재그 따라 그리기, 이전 선 되돌리기
+- **실제 그림 조각 맞추기**: 2·4·6조각, 조각을 누른 뒤 해당 빈 칸을 눌러 놓기
+- 낱말 카드 22개, 동물/음식/기타 분류, 한국어·영어 읽기 별도 버튼
+- 짧은 오리지널 그림책 3권, 각 책 3쪽, 책 선택 및 기기 음성 읽기
+- 부모 확인 수학 문제(간단한 보호자 게이트), 세션 제한 5/10/15분 또는 해제, 읽기 속도 선택
+- 네트워크 없이 기본 놀이 실행을 위한 Service Worker 캐시
+- iPad·Android 홈 화면 설치용 PNG 아이콘 추가
 
-## Deploy without a computer
-1. Create a repository on GitHub (private recommended during development).
-2. Upload the project files, keeping `index.html`, `sw.js`, `manifest.webmanifest`, and `icon.svg` in the same directory.
-3. For GitHub Pages, a public repository can publish from Settings > Pages > Deploy from branch > main / root. If the repo is private, check Pages availability for the account plan or use another static HTTPS host.
-4. Open the resulting Pages URL in Safari on iPad > Share > Add to Home Screen, or Chrome on Android > Install app.
-5. Open once online to cache offline files; check offline behavior by switching on airplane mode.
+## 갤럭시에서 업데이트하기
+1. v0.2 ZIP 압축을 풀고 안의 파일 8개를 확인합니다.
+2. GitHub `wjdgoeld-hash/doah-play` 저장소에서 **Add file → Upload files**를 누릅니다.
+3. 새 파일을 `main` 브랜치 **최상위(root)** 에 업로드하고 기존 파일은 같은 이름으로 덮어씁니다.
+4. Pages 재배포 후 https://wjdgoeld-hash.github.io/doah-play/ 로 접속합니다.
+5. 최신 화면이 보이지 않으면 브라우저를 완전히 닫았다가 다시 열거나 페이지를 새로고침합니다. 첫 온라인 실행에서 v0.2 파일이 캐시됩니다.
 
-## Technical notes
-- Plain HTML/CSS/JavaScript, no build tools; intentionally minimal to allow editing on mobile devices.
-- SVG app icon support depends on platform: PNG icon fallback is advisable for broad iOS PWA compatibility.
-- Speech synthesis uses available device voices. Korean pronunciation depends on `ko-KR` voice installation and may be unavailable offline.
-- Time limit is a soft in-app guard, not OS-level parental controls. The parent gate is intentionally lightweight, not security-grade.
-- `localStorage` saves only the configured session duration; no usage analytics or remote user data collection.
-- APK is **not** included. To produce a standalone Android APK later, integrate Capacitor and use Android CI with app signing; unsigned debug APKs are for testing only.
+## 설치
+- **갤럭시**: Chrome 주소 열기 → 메뉴 → 앱 설치 / 홈 화면에 추가
+- **아이패드**: Safari 주소 열기 → 공유 → 홈 화면에 추가 → 웹 앱으로 열기
+- 오프라인 사용 테스트: 설치 후 온라인에서 한 번 실행하고 비행기 모드에서 재실행해 봅니다.
 
-This is an early prototype, not a clinically validated educational product.
+## 주의
+- 화면 시간 설정은 앱 안의 안내 화면일 뿐 다른 앱 실행을 차단하지 않습니다.
+- 어린이와의 상호작용을 완전히 대체하는 교육 효과가 검증된 앱이 아닙니다.
+- TTS는 기기 음성 엔진을 사용하므로 기기/언어 설치 여부 및 오프라인 상황에 따라 다를 수 있습니다.
+- 앱 저장소는 공개되지만 사용자 정보는 업로드하지 않습니다. 가족 사진은 나중에 기기 내에서만 처리하는 기능으로 추가하는 것이 안전합니다.
+- iPad의 설치 형태는 PWA이며 `.ipa`가 아닙니다. Android용 APK는 다음 단계에서 별도로 빌드합니다.
