@@ -1,16 +1,16 @@
 {
-  "id": "./",
-  "name": "Doah Play — 도아의 놀이 세상",
-  "short_name": "Doah Play",
-  "description": "광고 없이 즐기는 도아의 그림, 퍼즐, 낱말, 그림책 놀이",
-  "lang": "ko",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#fff8ec",
-  "theme_color": "#fff7e9",
-  "icons": [
-    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}
-  ]
+ "name":"Doah Play - 도아의 놀이 세상",
+ "short_name":"Doah Play",
+ "description":"광고 없이 그림 그리기, 8조각 퍼즐, 한영 낱말, 움직이는 그림책을 즐기는 유아 놀이 앱",
+ "start_url":"./",
+ "scope":"./",
+ "display":"standalone",
+ "orientation":"any",
+ "lang":"ko",
+ "background_color":"#fff9f2",
+ "theme_color":"#f9e7ff",
+ "icons":[
+  {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+  {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+ ]
 }

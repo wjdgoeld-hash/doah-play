@@ -1,128 +1,102 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#fff7e9">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Doah Play">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="./icon.svg">
-<link rel="apple-touch-icon" href="./icon-180.png">
-<title>Doah Play · 도아의 놀이 세상</title>
-<style>
-:root{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;color:#344055;background:#fff8ec;font-synthesis:none}
-*{box-sizing:border-box}[hidden]{display:none!important}html,body{margin:0;min-height:100%;overscroll-behavior-y:contain}body{background:radial-gradient(circle at 12% 10%,#fff0ed,transparent 46%),radial-gradient(circle at 88% 90%,#e9f9f4,transparent 42%),#fff8ec}button,select{font:inherit}button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible,select:focus-visible{outline:3px solid #4a91e2;outline-offset:3px}
-.app{max-width:900px;min-height:100dvh;margin:auto;padding:18px max(16px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}.screen{display:none}.screen.active{display:block}.topbar,.bar{display:flex;align-items:center;justify-content:space-between;gap:10px}.logo{font-size:clamp(27px,5vw,39px);font-weight:900;color:#cf687a;letter-spacing:-.05em}.muted{color:#77849a}.mini{font-size:13px}.btn{min-height:50px;padding:11px 16px;border:0;border-radius:17px;background:#fff;color:#43516a;font-weight:800;box-shadow:0 4px 0 #e8dfd1}.btn:active,.tile:active,.choice:active{transform:translateY(3px);box-shadow:0 1px 0 #d8ccbc}.bar{margin:8px 0 20px}.bar h2{font-size:clamp(20px,3.7vw,30px);margin:0;text-align:center}.hero{text-align:center;margin:26px 0 23px}.hero h1{font-size:clamp(25px,5.4vw,43px);line-height:1.3;margin:8px auto}.hero p{font-size:16px;color:#7b8799;margin:8px}.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.tile{border:0;min-height:178px;display:flex;justify-content:center;align-items:center;flex-direction:column;border-radius:30px;gap:8px;font-size:clamp(19px,3.6vw,27px);color:#404f66;font-weight:900;box-shadow:0 7px 0 #e8dfd4}.tile .emoji{font-size:clamp(58px,10vw,88px);line-height:1.18}.tile small{font-size:13px;font-weight:650;color:#64738a}.pink{background:#ffe6ea}.yellow{background:#fff0c4}.green{background:#e1f7ed}.blue{background:#e4efff}.status{margin:20px auto 6px;max-width:480px;text-align:center}.status p{font-size:14px;color:#6e7c92}.progress{height:10px;background:#eee5dc;border-radius:20px;overflow:hidden}.progress>div{height:100%;background:#79c9aa;width:0;transition:width .3s}.footer{margin:16px;text-align:center;font-size:12px;color:#89929f}.group{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0}.pill{border:0;border-radius:28px;background:white;min-height:50px;padding:12px 18px;box-shadow:0 3px 0 #dfd6c9;color:#43516a;font-weight:800}.pill.chosen{background:#ffe5a3;outline:2px solid #f3b95d}.hint{color:#788499;text-align:center;font-size:14px;line-height:1.55;margin:12px auto}.feedback{min-height:32px;text-align:center;color:#b76b76;font-size:18px;font-weight:800}.drawpad{display:block;width:100%;height:min(48vh,440px);background:white;border:5px solid #ffe4b0;border-radius:27px;touch-action:none;user-select:none}.palette{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:15px 0}.swatch{width:46px;height:46px;flex:0 0 46px;border:5px solid white;border-radius:50%;box-shadow:0 2px 5px #0002}.swatch.chosen{outline:3px solid #556b8b}.board{max-width:600px;margin:auto;background:#fff;border-radius:26px;padding:16px;box-shadow:0 5px 0 #e8dfd1}.puzzle-grid{position:relative;display:grid;gap:5px;width:min(100%,510px);aspect-ratio:10/7;margin:8px auto;border-radius:18px;overflow:hidden;background:#f5ecdf}.puzzle-slot{position:relative;border:2px dashed #cdbfa9;border-radius:10px;background:#fff5;min-width:0;min-height:0;overflow:hidden;display:flex;justify-content:center;align-items:center}.puzzle-slot img{display:block;width:100%;height:100%;object-fit:fill}.puzzle-slot img.ghost{opacity:.17}.puzzle-slot .question{position:absolute;font-weight:900;font-size:26px;color:#b7b1ad}.puzzle-slot.filled{border:0}.puzzle-tray{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px auto;max-width:680px}.choice{width:clamp(92px,19vw,142px);aspect-ratio:10/7;border:4px solid white;border-radius:20px;background:white;box-shadow:0 4px 0 #e1d8c9;overflow:hidden;padding:0}.choice img{display:block;width:100%;height:100%;object-fit:fill}.choice.selected{border-color:#ffba65;outline:3px solid #f6c476}.choice.used{opacity:.2;pointer-events:none}.choice:disabled{cursor:default}.word-card{max-width:580px;min-height:350px;margin:20px auto 14px;border:0;border-radius:32px;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;box-shadow:0 7px 0 #e7dfd1}.word-card .picture{font-size:clamp(110px,22vw,172px);line-height:1.25}.word-card .korean{font-size:clamp(34px,6vw,52px);font-weight:900}.word-card .english{font-size:clamp(21px,4vw,28px);font-weight:800;color:#8090aa}.book-tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.book-tabs .pill{padding:10px 12px;font-size:15px}.storybook{max-width:650px;margin:18px auto;background:#fff;border:9px solid #fff2d8;border-radius:30px;min-height:370px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:25px 20px}.story-art{font-size:clamp(105px,19vw,158px);line-height:1.4}.story-text{font-size:clamp(22px,4vw,33px);font-weight:850;line-height:1.5;max-width:520px}.settings{max-width:570px;margin:20px auto;background:#fff;border-radius:25px;padding:25px;box-shadow:0 4px 0 #eadfce}.settings label{display:block;font-size:18px;font-weight:800;margin:20px 0 8px}.settings select{width:100%;padding:14px;border:2px solid #e5ddce;border-radius:12px;background:white;color:#344055;font-size:18px}.rest{position:fixed;inset:0;background:#fff5df;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center}.rest.show{display:flex}.rest .moon{font-size:100px}.rest h2{font-size:clamp(27px,6vw,43px)}.rest p{font-size:18px;color:#738098}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#394a64;color:white;border-radius:24px;padding:12px 24px;opacity:0;pointer-events:none;z-index:15;transition:opacity .2s;font-weight:800}.toast.show{opacity:1}@media(min-width:720px){.menu{gap:20px}.tile{min-height:220px}.app{padding-top:25px}}@media(max-width:440px){.app{padding:13px 12px 24px}.menu{gap:11px}.tile{min-height:157px;border-radius:23px}.btn{padding:8px 11px;font-size:14px}.bar h2{font-size:19px}.board{padding:12px}.word-card{min-height:280px}.storybook{min-height:315px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#f9e7ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Doah Play">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="stylesheet" href="style.css?v=03">
+  <title>Doah Play · 도아의 놀이 세상</title>
 </head>
 <body>
-<main class="app">
-<section id="home" class="screen active">
-  <header class="topbar"><div><div class="logo">🌈 Doah Play <span class="mini">v0.2</span></div><div class="mini muted">도아의 작은 놀이 세상</div></div><button class="btn" id="parentButton">⚙️ 부모님</button></header>
-  <div class="hero"><h1>도아야, 오늘은 뭐 하고 놀까?</h1><p>하고 싶은 놀이를 골라 봐요!</p></div>
-  <div class="menu"><button class="tile pink" data-go="draw"><span class="emoji">🎨</span>그림 그리기<small>끄적끄적 · 선 따라가기</small></button><button class="tile yellow" data-go="puzzle"><span class="emoji">🧩</span>조각 퍼즐<small>그림 조각 맞추기</small></button><button class="tile green" data-go="words"><span class="emoji">🐻</span>낱말 놀이<small>한국어 · English</small></button><button class="tile blue" data-go="books"><span class="emoji">📖</span>그림책<small>세 가지 짧은 이야기</small></button></div>
-  <div class="status" id="sessionStatus"><p id="timeLabel"></p><div class="progress"><div id="timeBar"></div></div></div>
-  <p class="footer">광고 없음 · 자동재생 없음 · 로그인 없음</p>
-</section>
-<section id="draw" class="screen"><div class="bar"><button class="btn" data-go="home">⌂ 홈</button><h2>🎨 그림 그리기</h2><button class="btn" id="clearDraw">↺ 지우기</button></div><div class="group" id="drawMode"><button class="pill chosen" data-mode="free">자유롭게</button><button class="pill" data-mode="trace">선 따라가기</button></div><div id="shapeOptions" class="group" hidden><button class="pill chosen" data-shape="line">직선</button><button class="pill" data-shape="circle">동그라미</button><button class="pill" data-shape="wave">물결</button><button class="pill" data-shape="zigzag">지그재그</button></div><canvas id="drawpad" class="drawpad" aria-label="손가락으로 선을 그리는 영역"></canvas><div class="palette" id="palette"></div><div class="group"><button class="pill" id="undoDraw">↶ 한 번 되돌리기</button></div><p class="hint">손가락으로 자유롭게 그려요. 선을 따라 그려도 좋아요!</p></section>
-<section id="puzzle" class="screen"><div class="bar"><button class="btn" data-go="home">⌂ 홈</button><h2>🧩 조각 퍼즐</h2><button class="btn" id="nextPuzzle">다음 →</button></div><div class="group" id="puzzleDifficulties"><button class="pill chosen" data-pieces="2">2조각</button><button class="pill" data-pieces="4">4조각</button><button class="pill" data-pieces="6">6조각</button></div><p class="hint">아래 조각을 누르고, 위의 빈 칸을 눌러 주세요.</p><div class="board"><div id="puzzleGrid" class="puzzle-grid"></div><p id="puzzleFeedback" class="feedback" aria-live="polite">어느 조각이 맞을까요?</p></div><div id="puzzleTray" class="puzzle-tray"></div></section>
-<section id="words" class="screen"><div class="bar"><button class="btn" data-go="home">⌂ 홈</button><h2>🐻 낱말 놀이</h2><button class="btn" id="nextWord">다음 →</button></div><div class="group" id="wordCategories"><button class="pill chosen" data-category="all">모두</button><button class="pill" data-category="animal">동물</button><button class="pill" data-category="food">과일·음식</button><button class="pill" data-category="other">다른 것</button></div><button class="word-card" id="wordCard"><span id="wordPicture" class="picture"></span><span id="wordKo" class="korean"></span><span id="wordEn" class="english"></span></button><div class="group"><button class="pill" id="speakKorean">🔊 한국어</button><button class="pill" id="speakEnglish">🔊 English</button><button class="pill" id="prevWord">← 이전</button></div><p class="hint">그림을 누르면 한국어로 읽어 줘요.</p></section>
-<section id="books" class="screen"><div class="bar"><button class="btn" data-go="home">⌂ 홈</button><h2>📖 그림책</h2><span style="width:50px"></span></div><div id="bookTabs" class="book-tabs"></div><div class="storybook"><div id="storyArt" class="story-art"></div><div id="storyText" class="story-text"></div></div><p class="hint" id="storyPage"></p><div class="group"><button id="prevStory" class="pill">← 이전</button><button id="readStory" class="pill">🔊 읽어 줘</button><button id="nextStory" class="pill">다음 →</button></div></section>
-<section id="settings" class="screen"><div class="bar"><button class="btn" data-go="home">⌂ 홈</button><h2>⚙️ 부모님 설정</h2><span style="width:50px"></span></div><div class="settings"><h3>도아의 놀이 설정</h3><p class="muted">이용 시간은 이 앱에서만 관리합니다. 기기 전체 사용을 막지는 못합니다.</p><label for="minutes">한 번에 사용하는 시간</label><select id="minutes"><option value="5">5분</option><option value="10">10분</option><option value="15">15분</option><option value="0">제한 없음 (보호자 감독)</option></select><label for="speechRate">읽어 주는 속도</label><select id="speechRate"><option value="0.75">천천히</option><option value="0.88">보통</option><option value="1">빠르게</option></select><p class="hint">말소리는 기기의 음성 기능을 사용하며, 오프라인에서는 지원 언어에 따라 작동하지 않을 수 있습니다.</p><div class="group"><button class="pill chosen" id="saveSettings">저장하고 새 놀이 시작</button></div></div></section>
-</main>
-<div id="rest" class="rest"><span class="moon">🌙</span><h2>도아야, 잘 놀았어!</h2><p>이제 잠깐 쉬어 볼까요?</p><button class="btn" id="restParent">부모님 메뉴</button></div><div id="toast" class="toast" role="status"></div>
-<script>
-'use strict';
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-const SCREENS=$$('.screen');let current='home', parentUnlocked=false, playedSeconds=0, lastTick=performance.now();
-const readNumber=(key,fallback)=>{const raw=localStorage.getItem(key);return raw===null?fallback:Number(raw)};
-let minutes=readNumber('doah-minutes',10), readingRate=readNumber('doah-reading-rate',.88);
-if(![0,5,10,15].includes(minutes))minutes=10;
-if(![.75,.88,1].includes(readingRate))readingRate=.88;
-$('#minutes').value=String(minutes);$('#speechRate').value=String(readingRate);
-let toastTimer;
-function toast(message){$('#toast').textContent=message;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),1900)}
-function speak(message,lang='ko-KR'){
-  if(!('speechSynthesis' in window)){toast('이 기기에서 음성을 지원하지 않아요.');return}
-  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(message);u.lang=lang;u.rate=readingRate;u.pitch=1.05;u.volume=1;speechSynthesis.speak(u);
-}
-function show(id){if(id==='settings'&&!parentUnlocked){askParent();return}current=id;SCREENS.forEach(el=>el.classList.toggle('active',el.id===id));speechSynthesis?.cancel();if(id==='draw')requestAnimationFrame(resizeCanvas);if(id==='puzzle')renderPuzzle();if(id==='words')renderWord();if(id==='books')renderStory();if(id==='home')parentUnlocked=false;window.scrollTo(0,0)}
-$$('[data-go]').forEach(el=>el.addEventListener('click',()=>show(el.dataset.go)));
-function askParent(){const a=2+Math.floor(Math.random()*7),b=2+Math.floor(Math.random()*7);const answer=prompt(`부모님 확인: ${a} + ${b} = ?`);if(answer!==null&&answer.trim()===String(a+b)){parentUnlocked=true;$('#rest').classList.remove('show');show('settings')}else if(answer!==null)toast('부모님과 함께해 주세요.')}
-$('#parentButton').addEventListener('click',askParent);$('#restParent').addEventListener('click',askParent);
-$('#saveSettings').addEventListener('click',()=>{minutes=Number($('#minutes').value);readingRate=Number($('#speechRate').value);localStorage.setItem('doah-minutes',minutes);localStorage.setItem('doah-reading-rate',readingRate);playedSeconds=0;lastTick=performance.now();$('#rest').classList.remove('show');show('home')});
-function tick(){const now=performance.now(),elapsed=Math.min(1.5,(now-lastTick)/1000);lastTick=now;if(document.visibilityState==='visible'&&!['settings'].includes(current)&&!$('#rest').classList.contains('show'))playedSeconds+=elapsed;
-  const remaining=minutes===0?Infinity:Math.max(0,minutes*60-playedSeconds);$('#timeLabel').textContent=minutes===0?'부모님과 함께 놀아요':`이번 놀이 약 ${Math.ceil(remaining/60)}분 남았어요`;$('#timeBar').style.width=minutes===0?'0%':`${Math.min(100,100*playedSeconds/(minutes*60))}%`;
-  if(minutes!==0&&remaining===0&&current!=='settings'){$('#rest').classList.add('show');speechSynthesis?.cancel()}
-}
-document.addEventListener('visibilitychange',()=>{lastTick=performance.now();if(document.hidden)speechSynthesis?.cancel()});setInterval(tick,1000);tick();
+<div class="app-shell" id="app">
+  <header class="topbar">
+    <button id="homeButton" class="head-action" aria-label="처음 화면으로" hidden>⌂ <span>홈</span></button>
+    <div class="wordmark">Doah <span>Play</span><small>v0.3</small></div>
+    <div class="top-actions">
+      <button id="soundButton" class="head-action" aria-label="배경음악 켜기 또는 끄기" aria-pressed="true">♫ <span>음악</span></button>
+      <button id="parentsButton" class="head-action parents" aria-label="부모님 설정">⚙ <span>부모님</span></button>
+    </div>
+  </header>
 
-// 그림 그리기: 터치 좌표를 정규화해 회전·크기 변경 시에도 선을 유지합니다.
-const canvas=$('#drawpad'),ctx=canvas.getContext('2d');
-let brush='#f06c85',drawMode='free',drawShape='line',strokes=[],activeStroke=null,drawWidth=1,drawHeight=1;
-const paints=[['분홍','#f06c85'],['주황','#f8ab50'],['노랑','#eed35d'],['초록','#67c69e'],['파랑','#6da9e9'],['보라','#a889d6'],['검정','#424d60']];
-$('#palette').innerHTML=paints.map(([name,color],i)=>`<button class="swatch ${i===0?'chosen':''}" aria-label="${name}" style="background:${color}" data-ink="${color}"></button>`).join('');
-$$('[data-ink]').forEach(btn=>btn.addEventListener('click',()=>{brush=btn.dataset.ink;$$('[data-ink]').forEach(b=>b.classList.toggle('chosen',b===btn))}));
-$$('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{drawMode=btn.dataset.mode;$$('[data-mode]').forEach(b=>b.classList.toggle('chosen',b===btn));$('#shapeOptions').hidden=drawMode!=='trace';strokes=[];paintCanvas()}));
-$$('[data-shape]').forEach(btn=>btn.addEventListener('click',()=>{drawShape=btn.dataset.shape;$$('[data-shape]').forEach(b=>b.classList.toggle('chosen',b===btn));strokes=[];paintCanvas()}));
-function traceGuide(){const w=drawWidth,h=drawHeight;ctx.save();ctx.setLineDash([11,16]);ctx.strokeStyle='#e3d7c9';ctx.lineWidth=13;ctx.lineCap='round';ctx.beginPath();
-  if(drawShape==='line'){ctx.moveTo(w*.16,h*.5);ctx.lineTo(w*.84,h*.5)}
-  if(drawShape==='circle'){ctx.ellipse(w*.5,h*.5,w*.28,h*.33,0,0,Math.PI*2)}
-  if(drawShape==='wave'){ctx.moveTo(w*.12,h*.52);for(let i=1;i<=65;i++){const x=w*(.12+.76*i/65);ctx.lineTo(x,h*(.52+.17*Math.sin(2*Math.PI*i/32)))}}
-  if(drawShape==='zigzag'){ctx.moveTo(w*.12,h*.25);ctx.lineTo(w*.32,h*.75);ctx.lineTo(w*.5,h*.25);ctx.lineTo(w*.68,h*.75);ctx.lineTo(w*.88,h*.25)}
-  ctx.stroke();ctx.restore();
-}
-function paintCanvas(){const rect=canvas.getBoundingClientRect();if(!rect.width)return;const dpr=Math.min(window.devicePixelRatio||1,3);drawWidth=rect.width;drawHeight=rect.height;canvas.width=Math.round(drawWidth*dpr);canvas.height=Math.round(drawHeight*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#fff';ctx.fillRect(0,0,drawWidth,drawHeight);if(drawMode==='trace')traceGuide();for(const stroke of strokes){if(!stroke.points.length)continue;ctx.beginPath();ctx.strokeStyle=stroke.color;ctx.lineWidth=11;ctx.lineCap='round';ctx.lineJoin='round';stroke.points.forEach((p,i)=>{const x=p.x*drawWidth,y=p.y*drawHeight;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});const p=stroke.points[0];if(stroke.points.length===1)ctx.lineTo(p.x*drawWidth+.1,p.y*drawHeight+.1);ctx.stroke()}}
-function resizeCanvas(){paintCanvas()}
-function pointerPos(e){const rect=canvas.getBoundingClientRect();return{x:Math.min(1,Math.max(0,(e.clientX-rect.left)/rect.width)),y:Math.min(1,Math.max(0,(e.clientY-rect.top)/rect.height))}}
-canvas.addEventListener('pointerdown',e=>{e.preventDefault();activeStroke={color:brush,points:[pointerPos(e)]};strokes.push(activeStroke);canvas.setPointerCapture(e.pointerId);paintCanvas()});
-canvas.addEventListener('pointermove',e=>{if(!activeStroke)return;e.preventDefault();activeStroke.points.push(pointerPos(e));paintCanvas()});
-function finishDraw(){activeStroke=null}canvas.addEventListener('pointerup',finishDraw);canvas.addEventListener('pointercancel',finishDraw);
-$('#undoDraw').addEventListener('click',()=>{strokes.pop();paintCanvas()});$('#clearDraw').addEventListener('click',()=>{strokes=[];paintCanvas()});
-window.addEventListener('resize',()=>{if(current==='draw')resizeCanvas()});
+  <main>
+    <section class="view is-active" id="home" aria-labelledby="homeTitle">
+      <div class="hello">
+        <div class="hello-stars" aria-hidden="true">✦  ☁️  ✦</div>
+        <h1 id="homeTitle">도아야, 오늘은<br><em>뭐 하고 놀까?</em></h1>
+        <p>마음에 드는 그림을 눌러보세요!</p>
+      </div>
+      <div class="activity-grid">
+        <button class="activity a-draw" data-open="draw"><span class="activity-art" aria-hidden="true">🎨</span><span>그림 그리기</span><small>쓱쓱, 반짝반짝</small></button>
+        <button class="activity a-puzzle" data-open="puzzle"><span class="activity-art" aria-hidden="true">🧩</span><span>뽀로로 퍼즐</span><small>조각을 쏙!</small></button>
+        <button class="activity a-words" data-open="words"><span class="activity-art" aria-hidden="true">🐻</span><span>낱말 카드</span><small>한국어와 영어</small></button>
+        <button class="activity a-books" data-open="books"><span class="activity-art" aria-hidden="true">📖</span><span>움직이는 그림책</span><small>아기돼지 삼형제</small></button>
+      </div>
+      <div class="home-bottom"><span>🌼 광고 없는 놀이</span><span id="timerStatus">10분 놀이</span></div>
+    </section>
 
-// 조각 퍼즐: 배경 일러스트를 캔버스로 생성한 뒤 2/4/6개의 실제 이미지 조각으로 나눕니다.
-const puzzleScenes=[['🐰','토끼','#ffe4e7'],['🐻','곰돌이','#fff0c5'],['🦊','여우','#ffe7cc'],['🐧','펭귄','#dff1fb'],['🐸','개구리','#e0f4db'],['🦁','사자','#fff0bd']];
-let puzzleScene=0,pieceCount=2,puzzleTiles=[],placed=[],selectedPiece=null;
-function sceneImage(){const c=document.createElement('canvas');c.width=600;c.height=420;const g=c.getContext('2d'),[emoji,name,bg]=puzzleScenes[puzzleScene%puzzleScenes.length];g.fillStyle=bg;g.fillRect(0,0,600,420);g.fillStyle='#ffffff88';for(const [x,y,r] of [[100,90,40],[510,105,60],[90,360,50],[470,350,44]]){g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill()}g.font='250px "Apple Color Emoji","Segoe UI Emoji",sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(emoji,300,210);g.font='bold 32px sans-serif';g.fillStyle='#7a6d62';g.fillText(name,300,376);return c}
-function shuffle(a){const copy=[...a];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}return copy}
-function preparePuzzle(){const cols=pieceCount===6?3:2,rows=pieceCount/cols,scene=sceneImage();puzzleTiles=[];for(let i=0;i<pieceCount;i++){const row=Math.floor(i/cols),col=i%cols,c=document.createElement('canvas');c.width=scene.width/cols;c.height=scene.height/rows;c.getContext('2d').drawImage(scene,col*c.width,row*c.height,c.width,c.height,0,0,c.width,c.height);puzzleTiles.push(c.toDataURL('image/png'))}placed=Array(pieceCount).fill(false);selectedPiece=null;renderPuzzle()}
-function renderPuzzle(){const cols=pieceCount===6?3:2;$('#puzzleGrid').style.gridTemplateColumns=`repeat(${cols}, 1fr)`;$('#puzzleGrid').innerHTML=puzzleTiles.map((src,i)=>`<button class="puzzle-slot ${placed[i]?'filled':''}" data-slot="${i}" aria-label="${i+1}번째 퍼즐 위치"><img class="${placed[i]?'':'ghost'}" src="${src}" alt=""><span class="question">${placed[i]?'':'?'}</span></button>`).join('');
-  const order=shuffle(puzzleTiles.map((_,i)=>i));$('#puzzleTray').innerHTML=order.map(i=>`<button class="choice ${placed[i]?'used':''} ${selectedPiece===i?'selected':''}" data-piece="${i}" ${placed[i]?'disabled':''} aria-label="${i+1}번 조각 선택"><img src="${puzzleTiles[i]}" alt="퍼즐 조각"></button>`).join('');
-  $$('[data-piece]').forEach(b=>b.addEventListener('click',()=>{selectedPiece=Number(b.dataset.piece);$$('[data-piece]').forEach(n=>n.classList.toggle('selected',n===b));$('#puzzleFeedback').textContent='위의 빈 칸을 눌러 주세요.'}));
-  $$('[data-slot]').forEach(b=>b.addEventListener('click',()=>{const target=Number(b.dataset.slot);if(placed[target])return;if(selectedPiece===null){$('#puzzleFeedback').textContent='먼저 아래 조각을 골라 주세요.';return}if(target!==selectedPiece){$('#puzzleFeedback').textContent='다른 자리에 놓아 볼까요?';return}placed[target]=true;selectedPiece=null;renderPuzzle();if(placed.every(Boolean)){$('#puzzleFeedback').textContent='완성! 참 잘했어요!';speak('도아야, 참 잘했어!')}else $('#puzzleFeedback').textContent='좋아요! 계속해 봐요.'}));
-}
-$$('[data-pieces]').forEach(b=>b.addEventListener('click',()=>{pieceCount=Number(b.dataset.pieces);$$('[data-pieces]').forEach(x=>x.classList.toggle('chosen',x===b));preparePuzzle()}));
-$('#nextPuzzle').addEventListener('click',()=>{puzzleScene++;preparePuzzle()});
+    <section class="view" id="draw" aria-labelledby="drawTitle">
+      <div class="section-head"><div><p class="eyebrow">쓱쓱 그려볼까요?</p><h2 id="drawTitle">🎨 그림 그리기</h2></div><button id="clearButton" class="rounded-btn">모두 지우기 ↺</button></div>
+      <div class="mode-row" id="drawModes"><button class="chip is-selected" data-trace="free">마음대로</button><button class="chip" data-trace="line">────</button><button class="chip" data-trace="circle">◯</button><button class="chip" data-trace="wave">〰</button><button class="chip" data-trace="zigzag">⌁</button></div>
+      <div id="paintWrap" class="paint-wrap"><canvas id="paintCanvas" aria-label="손가락으로 그림을 그리는 곳"></canvas><svg id="traceOverlay" viewBox="0 0 600 420" aria-hidden="true"></svg></div>
+      <div class="tools-row"><div class="swatches" id="colorButtons"></div><button id="undoButton" class="rounded-btn" aria-label="이전 선 되돌리기">↶ 되돌리기</button></div>
+      <p class="gentle-tip">손가락으로 따라 그려요. 틀려도 괜찮아요!</p>
+    </section>
 
-// 낱말 카드: 음성 버튼별 언어 코드가 구분됩니다.
-const words=[
- ['🐻','곰','Bear','animal'],['🐶','강아지','Dog','animal'],['🐱','고양이','Cat','animal'],['🐰','토끼','Rabbit','animal'],['🐘','코끼리','Elephant','animal'],['🦁','사자','Lion','animal'],['🐸','개구리','Frog','animal'],['🐧','펭귄','Penguin','animal'],['🐮','소','Cow','animal'],['🐵','원숭이','Monkey','animal'],
- ['🍎','사과','Apple','food'],['🍌','바나나','Banana','food'],['🍓','딸기','Strawberry','food'],['🍇','포도','Grapes','food'],['🍉','수박','Watermelon','food'],['🥕','당근','Carrot','food'],
- ['🚗','자동차','Car','other'],['🚂','기차','Train','other'],['🌞','해','Sun','other'],['🌙','달','Moon','other'],['⭐','별','Star','other'],['⚽','공','Ball','other']
-];let category='all',wordPosition=0;
-function currentWords(){return category==='all'?words:words.filter(w=>w[3]===category)}
-function selectedWord(){const list=currentWords();return list[(wordPosition%list.length+list.length)%list.length]}
-function renderWord(){const w=selectedWord();$('#wordPicture').textContent=w[0];$('#wordKo').textContent=w[1];$('#wordEn').textContent=w[2]}
-function moveWord(n){wordPosition+=n;renderWord()}
-$('#nextWord').addEventListener('click',()=>moveWord(1));$('#prevWord').addEventListener('click',()=>moveWord(-1));$('#wordCard').addEventListener('click',()=>speak(selectedWord()[1]));$('#speakKorean').addEventListener('click',()=>speak(selectedWord()[1],'ko-KR'));$('#speakEnglish').addEventListener('click',()=>speak(selectedWord()[2],'en-US'));
-$$('[data-category]').forEach(b=>b.addEventListener('click',()=>{category=b.dataset.category;wordPosition=0;$$('[data-category]').forEach(x=>x.classList.toggle('chosen',x===b));renderWord()}));
+    <section class="view" id="puzzle" aria-labelledby="puzzleTitle">
+      <div class="section-head"><div><p class="eyebrow">조각을 옮겨볼까요?</p><h2 id="puzzleTitle">🧩 뽀로로 퍼즐</h2></div><button id="newPuzzle" class="rounded-btn">다시 섞기 ↻</button></div>
+      <div class="scene-tabs" id="puzzleScenes"><button class="scene-tab is-selected" data-scene="0">⛄ 눈사람</button><button class="scene-tab" data-scene="1">🌷 소풍</button><button class="scene-tab" data-scene="2">⛵ 바다</button></div>
+      <div class="puzzle-help">아래 조각을 <strong>끌어서</strong> 위 그림의 제자리에 쏙! <span>조각을 누른 뒤 빈 칸을 눌러도 돼요.</span></div>
+      <div class="puzzle-board" id="puzzleBoard" aria-label="8칸 그림 퍼즐"></div>
+      <div class="puzzle-feedback" id="puzzleFeedback" role="status" aria-live="polite">어떤 조각부터 맞춰볼까요?</div>
+      <div class="puzzle-tray" id="puzzleTray" aria-label="움직일 그림 조각"></div>
+      <div class="puzzle-bottom"><span id="puzzleCount">0 / 8개</span><button id="puzzleHint" class="rounded-btn">💡 힌트</button></div>
+    </section>
 
-// 그림책: 책별 페이지가 분리되어 마지막 장 이후 다른 책으로 자동 넘어가지 않습니다.
-const books=[
- {title:'토끼의 꽃',pages:[['🐰🌷','작은 토끼가 꽃을 발견했어요.'],['🐰🦋','나비가 팔랑팔랑 날아왔어요.'],['🐰☀️','토끼는 햇살 아래에서 활짝 웃었어요.']]},
- {title:'곰돌이의 사과',pages:[['🐻🍎','곰돌이가 빨간 사과를 찾았어요.'],['🐻🐿️','친구 다람쥐와 사과를 나누었어요.'],['🐻💕','함께 먹으니 더 맛있었답니다.']]},
- {title:'펭귄의 눈사람',pages:[['🐧❄️','펭귄이 하얀 눈밭을 걸었어요.'],['🐧⛄','동글동글 눈사람을 만들었어요.'],['🐧🌟','반짝이는 별을 보며 집에 돌아갔어요.']]}
-];let bookIndex=0,pageIndex=0;
-$('#bookTabs').innerHTML=books.map((b,i)=>`<button class="pill ${i===0?'chosen':''}" data-book="${i}">${b.title}</button>`).join('');
-$$('[data-book]').forEach(b=>b.addEventListener('click',()=>{bookIndex=Number(b.dataset.book);pageIndex=0;renderStory()}));
-function renderStory(){const story=books[bookIndex],page=story.pages[pageIndex];$('#storyArt').textContent=page[0];$('#storyText').textContent=page[1];$('#storyPage').textContent=`${story.title} · ${pageIndex+1} / ${story.pages.length}쪽`;$$('[data-book]').forEach((b,i)=>b.classList.toggle('chosen',i===bookIndex));$('#prevStory').disabled=pageIndex===0;$('#nextStory').disabled=pageIndex===story.pages.length-1}
-$('#prevStory').addEventListener('click',()=>{if(pageIndex>0){pageIndex--;renderStory()}});$('#nextStory').addEventListener('click',()=>{if(pageIndex<books[bookIndex].pages.length-1){pageIndex++;renderStory()}});$('#readStory').addEventListener('click',()=>speak(books[bookIndex].pages[pageIndex][1]));
+    <section class="view" id="words" aria-labelledby="wordsTitle">
+      <div class="section-head"><div><p class="eyebrow">그림을 눌러 들려주세요</p><h2 id="wordsTitle">🐻 낱말 카드</h2></div><div class="step-badge" id="wordNumber">1 / 24</div></div>
+      <div class="word-filter" id="wordFilters"><button class="chip is-selected" data-filter="all">모두</button><button class="chip" data-filter="animal">동물</button><button class="chip" data-filter="food">음식</button><button class="chip" data-filter="world">우리 주변</button></div>
+      <div class="card-stage" id="cardStage">
+        <button id="wordCard" class="word-card" aria-label="그림을 누르면 한국어와 영어로 설명을 들어요">
+          <span class="card-deco d1">✦</span><span class="card-deco d2">●</span>
+          <span id="wordEmoji" class="word-emoji" aria-hidden="true">🐻</span>
+          <span class="word-titles"><strong id="wordKorean">곰</strong><span id="wordEnglish">Bear</span></span>
+          <span id="wordStep" class="word-step">그림을 누르면 읽어 줘요!</span>
+        </button>
+        <div class="read-progress" id="readProgress" aria-live="polite"><span data-stage="0">한국어</span><span data-stage="1">English</span><span data-stage="2">한국어 문장</span><span data-stage="3">English sentence</span></div>
+      </div>
+      <div class="card-nav"><button id="prevWord" aria-label="이전 카드">← 이전</button><span>← 카드 옆으로 밀기 →</span><button id="nextWord" aria-label="다음 카드">다음 →</button></div>
+      <p class="gentle-tip">읽어주는 동안에는 다른 말을 시작하지 않아요.</p>
+    </section>
 
-preparePuzzle();renderWord();renderStory();
-if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('./sw.js');reg.update()}catch(e){console.warn('Offline support unavailable',e)}})}
-</script>
+    <section class="view book-view" id="books" aria-labelledby="booksTitle">
+      <div class="book-heading"><div><p class="eyebrow">톡톡! 움직이는 그림책</p><h2 id="booksTitle">🐷 아기돼지 삼형제</h2></div><span id="pageNumber" class="step-badge">1 / 8</span></div>
+      <div class="book-stage" id="storyStage" aria-label="움직이는 이야기 그림"></div>
+      <div id="storyOverlay" class="story-overlay" aria-hidden="true"></div>
+      <div class="book-copy"><div class="copy-head"><span id="pageHeading">어느 봄날</span><button id="readPageButton" class="listen-btn">🔊 다시 읽기</button></div><p id="storyText"></p><div id="speechHint" class="reading-status" aria-live="polite">페이지가 바뀌면 이야기를 읽어줘요.</div></div>
+      <div class="book-controls"><button id="prevPage">← 앞장</button><span id="bookProgress">● ○ ○ ○ ○ ○ ○ ○</span><button id="nextPage">뒷장 →</button></div>
+      <p class="gentle-tip">돼지, 늑대, 집의 창문, 나무를 톡톡 눌러보세요!</p>
+    </section>
+
+    <section class="view" id="settings" aria-labelledby="settingsTitle">
+      <div class="section-head"><div><p class="eyebrow">도아와 함께 사용할 때</p><h2 id="settingsTitle">⚙ 부모님 설정</h2></div></div>
+      <div class="settings-panel"><label for="timeLimit">한 번에 사용하는 시간</label><select id="timeLimit"><option value="5">5분</option><option value="10">10분</option><option value="15">15분</option><option value="0">시간 제한 없음</option></select>
+      <label for="musicVolume">배경 음악 소리</label><input id="musicVolume" type="range" min="0" max="40" value="18"><p class="field-note">말을 읽어줄 때는 음악 소리를 자동으로 낮춥니다.</p>
+      <button id="restartSession" class="primary-btn">설정 저장하고 새 놀이 시작</button><p class="field-note">시간 제한은 앱 내부 안내 기능입니다. 기기 전체 사용을 차단하지는 않습니다.</p>
+      <p class="field-note">음악은 기존 찬양곡을 녹음·복제한 것이 아닌 새로 제작한 연주곡입니다. 그림 퍼즐은 별도 생성한 팬아트이며 공식 뽀로로 자료가 아닙니다.</p></div>
+    </section>
+  </main>
+</div>
+<div class="pause-overlay" id="pauseOverlay" hidden><div class="pause-card"><div>🌙</div><h2>도아야, 참 잘 놀았어!</h2><p>이제 눈과 손도 쉬어볼까요?</p><button class="primary-btn" id="pauseParent">부모님과 함께하기</button></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="dragGhost" aria-hidden="true"></div>
+<audio id="mainMusic" src="gentle-piano-medley.mp3" loop preload="auto"></audio>
+<audio id="storyMusic" loop preload="none"></audio>
+<script defer src="app.js?v=03"></script>
 </body>
 </html>
