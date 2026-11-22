@@ -8,3 +8,38 @@
 .book-stage .house.is-shaky{animation:houseWobble 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}
 .book-stage .house.rustle{animation:treeShake .45s ease-in-out 2}
 @keyframes houseWobble{0%,100%{transform:rotate(0)}30%{transform:rotate(-2.5deg)}60%{transform:rotate(3.7deg)}}
+
+/* v0.4: premium picture-book illustration, tappable scene regions, layered interior window */
+.book-view{max-width:880px;margin:0 auto}.book-stage{width:min(100%,660px);aspect-ratio:3/4;max-height:none;margin:auto;overflow:hidden;isolation:isolate;border:6px solid #fff;border-radius:27px;background:#e6eddc;box-shadow:0 10px 27px #846c7d33;position:relative;touch-action:manipulation}
+.book-stage .story-illustration{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;animation:storyBreath 16s ease-in-out infinite alternate;pointer-events:none;user-select:none;-webkit-user-select:none}
+.book-stage .story-shimmer{position:absolute;inset:0;pointer-events:none;background:linear-gradient(112deg,transparent 30%,#ffffff18 46%,transparent 60%);transform:translateX(-180%);animation:storyShimmer 13s linear infinite}
+.story-hotspot{position:absolute;z-index:2;border:0;background:transparent;border-radius:15px;color:#fff;cursor:pointer;touch-action:manipulation;display:grid;place-items:center;transition:transform .18s}
+.story-hotspot:active{transform:scale(.95)}.story-hotspot:focus-visible{outline:4px solid #fff67d;outline-offset:-2px}
+.story-hotspot-marker{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(15px,2.9vw,22px);background:#ffffffe8;border:2px solid #ffffffa6;border-radius:50%;width:35px;height:35px;display:grid;place-items:center;box-shadow:0 2px 9px #55434477;opacity:.84;animation:spotlightPulse 4.2s ease-in-out infinite}
+.story-hotspot:nth-child(3n) .story-hotspot-marker{animation-delay:1.4s}.story-hotspot:nth-child(4n) .story-hotspot-marker{animation-delay:2.4s}
+.story-hotspot.jiggle{animation:treeJiggle .22s ease-in-out 3}
+.book-interaction-caption{text-align:center;min-height:29px;margin:9px auto 0;font-size:12px;font-weight:750;color:#957f9b;max-width:650px}
+.book-action-bubble{position:absolute;z-index:9;transform:translate(-50%,-50%);background:#fff8e6ee;color:#745871;border:2px solid white;border-radius:20px;box-shadow:0 3px 12px #55495533;padding:9px 13px;white-space:nowrap;font-weight:850;font-size:clamp(12px,2.6vw,18px);pointer-events:none;animation:bubbleOut 1.9s ease-out both}
+.book-particle{position:absolute;z-index:7;pointer-events:none;font-size:clamp(17px,3vw,28px);animation:fallAway 1.45s ease-out forwards;filter:drop-shadow(0 2px 2px #33225522)}
+.book-stage.wind-shake .story-illustration{animation:windMove .16s ease-in-out 7}.book-stage.brick-resists .story-illustration{animation:brickResists 1s ease-out 1}
+.window-detail-panel{position:absolute;z-index:8;width:38%;aspect-ratio:1/1.05;filter:drop-shadow(0 10px 12px #49352d80);transform:scale(.4) rotate(-10deg);opacity:0;pointer-events:none;transition:transform .42s cubic-bezier(.15,1.5,.42,1),opacity .25s}
+.window-detail-panel.open{transform:scale(1) rotate(0);opacity:1;pointer-events:auto}
+.interior-window{height:100%;position:relative;border:9px solid #a06548;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 4px #ffdeb9,0 0 0 3px #fbefd7;background:#f2d4a6}
+.room-scene{position:absolute;inset:0;background:#ffe3c2}.room-scene svg{width:100%;height:100%;display:block}
+.shutter{position:absolute;top:0;bottom:0;width:50%;z-index:2;border:5px solid #9d6246;background:repeating-linear-gradient(0deg,#c5825c 0px,#c5825c 13px,#89583f 14px,#ab7052 19px);transition:transform .7s cubic-bezier(.17,.88,.21,1.03);pointer-events:none}
+.shutter-left{left:0;transform-origin:left center}.shutter-right{right:0;transform-origin:right center}.window-detail-panel.open .shutter-left{transform:perspective(260px) rotateY(-105deg)}.window-detail-panel.open .shutter-right{transform:perspective(260px) rotateY(105deg)}
+.window-close{position:absolute;z-index:6;right:4px;top:4px;color:#765040;background:white;border-radius:50%;width:28px;height:28px;font-size:21px;display:grid;place-items:center;box-shadow:0 1px 7px #56433299}
+.window-label{position:absolute;z-index:5;bottom:0;left:0;right:0;background:#fff9eac9;color:#81564e;text-align:center;font-size:clamp(9px,2vw,13px);font-weight:850;line-height:1.45;padding:5px 2px;pointer-events:none}
+.story-overlay.active{pointer-events:none}.wolf-cameo{position:relative;width:min(65vw,360px);text-align:center;animation:wolfAppear 1.1s cubic-bezier(.18,1.3,.4,1) forwards;filter:drop-shadow(0 15px 35px #6e3f3288);z-index:2}.wolf-cameo img{width:100%;border-radius:48%;display:block}.wolf-cameo span{display:inline-block;border-radius:18px;background:#fff4dc;padding:8px 15px;font-size:24px;font-weight:900;color:#744f50}
+.book-copy{max-width:660px;margin:13px auto 0}.book-copy p{font-size:clamp(16px,2.5vw,21px)}.book-controls{max-width:660px}.book-heading{max-width:660px;margin-left:auto;margin-right:auto}
+@keyframes storyBreath{0%{transform:scale(1)}100%{transform:scale(1.045) translateY(-.7%)}}@keyframes spotlightPulse{0%,72%,100%{box-shadow:0 1px 8px #55434477;opacity:.65}82%{box-shadow:0 0 0 8px #fff4be77,0 2px 9px #554344bb;opacity:.99}}
+@keyframes storyShimmer{0%,20%{transform:translateX(-130%)}40%,100%{transform:translateX(160%)}}
+@keyframes bubbleOut{0%{opacity:0;transform:translate(-50%,-5%) scale(.7)}18%,74%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(.94)}}
+@keyframes fallAway{0%{opacity:1;transform:translate(0,0) rotate(0) scale(.6)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(1.05)}}
+@keyframes treeJiggle{0%,100%{transform:rotate(0)}50%{transform:rotate(6deg)}}@keyframes windMove{0%,100%{transform:translateX(-.8%) rotate(-.7deg) scale(1.025)}50%{transform:translateX(.8%) rotate(.7deg) scale(1.025)}}
+@keyframes brickResists{0%,100%{transform:translateX(0) scale(1.01)}35%{transform:translateX(-2px) scale(1.01)}64%{transform:translateX(1px) scale(1.01)}}
+@keyframes wolfAppear{0%{transform:scale(.22) translateY(65px);opacity:0}40%{transform:scale(1.05);opacity:1}68%{transform:scale(.95)}100%{transform:scale(.48) translateY(100px);opacity:0}}
+@media(max-width:430px){.book-stage{border-width:4px;border-radius:22px}.story-hotspot-marker{width:29px;height:29px;font-size:16px}.window-detail-panel{width:45%}.window-label{font-size:9px}.book-copy{padding:14px}.book-interaction-caption{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.book-stage .story-illustration,.book-stage .story-shimmer,.story-hotspot-marker{animation:none}.book-particle{animation-duration:.3s}.window-detail-panel{transition:none}.window-detail-panel.open .shutter{transition:none}}
+
+.story-hotspot[data-action="window"]{z-index:5}.story-hotspot[data-action="pig"],.story-hotspot[data-action="wolf"]{z-index:3}

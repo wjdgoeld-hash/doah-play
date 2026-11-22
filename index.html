@@ -10,14 +10,14 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-180.png">
-  <link rel="stylesheet" href="style.css?v=03">
+  <link rel="stylesheet" href="style.css?v=04">
   <title>Doah Play · 도아의 놀이 세상</title>
 </head>
 <body>
 <div class="app-shell" id="app">
   <header class="topbar">
     <button id="homeButton" class="head-action" aria-label="처음 화면으로" hidden>⌂ <span>홈</span></button>
-    <div class="wordmark">Doah <span>Play</span><small>v0.3</small></div>
+    <div class="wordmark">Doah <span>Play</span><small>v0.4</small></div>
     <div class="top-actions">
       <button id="soundButton" class="head-action" aria-label="배경음악 켜기 또는 끄기" aria-pressed="true">♫ <span>음악</span></button>
       <button id="parentsButton" class="head-action parents" aria-label="부모님 설정">⚙ <span>부모님</span></button>
@@ -76,11 +76,12 @@
 
     <section class="view book-view" id="books" aria-labelledby="booksTitle">
       <div class="book-heading"><div><p class="eyebrow">톡톡! 움직이는 그림책</p><h2 id="booksTitle">🐷 아기돼지 삼형제</h2></div><span id="pageNumber" class="step-badge">1 / 8</span></div>
-      <div class="book-stage" id="storyStage" aria-label="움직이는 이야기 그림"></div>
+      <div class="book-stage" id="storyStage" aria-label="움직이는 이야기 그림. 반짝이는 표시를 눌러보세요"></div>
+      <div class="book-interaction-caption" id="bookActionCaption" role="status" aria-live="polite">✨ 그림 속 반짝이는 곳을 눌러보세요</div>
       <div id="storyOverlay" class="story-overlay" aria-hidden="true"></div>
       <div class="book-copy"><div class="copy-head"><span id="pageHeading">어느 봄날</span><button id="readPageButton" class="listen-btn">🔊 다시 읽기</button></div><p id="storyText"></p><div id="speechHint" class="reading-status" aria-live="polite">페이지가 바뀌면 이야기를 읽어줘요.</div></div>
       <div class="book-controls"><button id="prevPage">← 앞장</button><span id="bookProgress">● ○ ○ ○ ○ ○ ○ ○</span><button id="nextPage">뒷장 →</button></div>
-      <p class="gentle-tip">돼지, 늑대, 집의 창문, 나무를 톡톡 눌러보세요!</p>
+      <p class="gentle-tip">반짝이는 곳을 눌러 창문을 열고, 나무를 흔들고, 늑대의 바람을 만나보세요!</p>
     </section>
 
     <section class="view" id="settings" aria-labelledby="settingsTitle">
@@ -97,6 +98,7 @@
 <div id="dragGhost" aria-hidden="true"></div>
 <audio id="mainMusic" src="gentle-piano-medley.mp3" loop preload="auto"></audio>
 <audio id="storyMusic" loop preload="none"></audio>
-<script defer src="app.js?v=03"></script>
+<audio id="narrationAudio" preload="none"></audio>
+<script defer src="app.js?v=04"></script>
 </body>
 </html>
