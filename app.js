@@ -1,4 +1,4 @@
-/* Doah Play v0.4 - enhanced interactive story art + private voice recordings. */
+/* Doah Play v0.5 - enhanced interactive story art + private voice recordings. */
 'use strict';
 const $ = (s,root=document)=>root.querySelector(s);
 const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
@@ -19,7 +19,7 @@ function playForView(){
   if(!soundEnabled){mainAudio.pause();storyAudio.pause();return}
   if(document.hidden){mainAudio.pause();storyAudio.pause();return}
   if(view==='books'){
-    mainAudio.pause();storyAudio.src=`story-${page+1}.mp3`;storyAudio.loop=true;storyAudio.volume=volume*.78;
+    mainAudio.pause();storyAudio.src=`story-${STORY[page].music}.mp3`;storyAudio.loop=true;storyAudio.volume=volume*.78;
     storyAudio.play().catch(()=>{});
   }else{
     storyAudio.pause(); mainAudio.loop=true;mainAudio.volume=volume;
@@ -69,10 +69,10 @@ function show(next){
   stopVoice();view=next;views.forEach(el=>el.classList.toggle('is-active',el.id===next));
   $('#homeButton').hidden=next==='home';
   if(next==='draw')requestAnimationFrame(sizeCanvas);
-  if(next==='puzzle')renderPuzzle();
+  if(next==='puzzle')renderPuzzle();else clearTimeout(puzzleAdvanceTimer);
   if(next==='words')renderWord();
   if(next==='books'){renderBook();playForView();readPage();}
-  else playForView();
+  else {clearTimeout(turnTimer);turnBusy=false;cleanupPageEffects();playForView();}
   window.scrollTo({top:0,behavior:'instant'});
 }
 $$('[data-open]').forEach(el=>el.addEventListener('click',()=>{audioUnlock();show(el.dataset.open)}));
@@ -119,12 +119,13 @@ const guides={line:'M 85 210 L 515 210',circle:'M 430 210 A 130 130 0 1 1 170 21
 $('#drawModes').addEventListener('click',e=>{const b=e.target.closest('[data-trace]');if(!b)return;mode=b.dataset.trace;$$('#drawModes button').forEach(v=>v.classList.toggle('is-selected',v===b));$('#traceOverlay').innerHTML=guides[mode]?`<path d="${guides[mode]}" fill="none" stroke="#c5b5e1" stroke-width="13" stroke-linecap="round" stroke-dasharray="14 19"/>`:'';strokes=[];redraw()});
 window.addEventListener('resize',()=>{if(view==='draw')sizeCanvas()});
 // --- Eight-piece picture puzzles. Pointer Events work on both Safari/iPad and Android Chrome. ---
-const puzzleImages=['pororo-snow.jpg','pororo-picnic.jpg','pororo-ocean.jpg'];
-let scene=0,solvedPieces=new Set(),selectedPiece=null,drag=null,suppressPieceClick=false;
+const puzzleImages=Array.from({length:5},(_,i)=>`friends-${i+1}.jpg`);
+let scene=0,solvedPieces=new Set(),selectedPiece=null,drag=null,suppressPieceClick=false,puzzleAdvanceTimer=null;
 function positionFor(id){return `${Math.floor(id%4)*100/3}% ${Math.floor(id/4)*100}%`}
 function setPuzzleFeedback(msg){$('#puzzleFeedback').textContent=msg}
 function shuffle(v){for(let i=v.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[v[i],v[j]]=[v[j],v[i]]}return v}
 function renderPuzzle(){
+  clearTimeout(puzzleAdvanceTimer);$('#puzzleFinish').hidden=true;
   solvedPieces.clear();selectedPiece=null;drag=null;$('#dragGhost').style.display='none';
   $$('#puzzleScenes button').forEach(b=>b.classList.toggle('is-selected',Number(b.dataset.scene)===scene));
   const img=puzzleImages[scene];
@@ -146,11 +147,21 @@ function placePiece(id,slot){
   $(`[data-piece="${id}"]`)?.remove();selectedPiece=null;
   $('#puzzleCount').textContent=`${solvedPieces.size} / 8개`;
   setPuzzleFeedback(solvedPieces.size===8?'짜잔! 퍼즐을 완성했어요! ⭐':'정답이에요! 참 잘했어요!');
-  if(solvedPieces.size===8){beep(1174,.26,'sine',.05,.5);notify('퍼즐 완성! 다른 그림도 맞춰볼까요?')}
+  if(solvedPieces.size===8){
+    beep(1174,.26,'sine',.05,.5);
+    setPuzzleFeedback('짝짝짝! 완성했어요! 다음 퍼즐로 가요! 🎉');
+    puzzleAdvanceTimer=setTimeout(()=>{
+      if(view!=='puzzle')return;
+      if(scene<puzzleImages.length-1){scene++;renderPuzzle()}
+      else{$('#puzzleFinish').hidden=false;$('#puzzleFinish').scrollIntoView({block:'nearest',behavior:'smooth'});goodChime()}
+    },1700);
+  }
   return true;
 }
 $('#puzzleScenes').addEventListener('click',e=>{const b=e.target.closest('[data-scene]');if(!b)return;audioUnlock();scene=Number(b.dataset.scene);renderPuzzle()});
 $('#newPuzzle').addEventListener('click',()=>renderPuzzle());
+$('#restartPuzzles').addEventListener('click',()=>{scene=0;renderPuzzle()});
+$('#finishPuzzlesHome').addEventListener('click',()=>show('home'));
 $('#puzzleHint').addEventListener('click',()=>{
   const id=selectedPiece??[...Array(8).keys()].find(x=>!solvedPieces.has(x));
   const el=$(`[data-slot="${id}"]`);if(!el)return;el.classList.add('hinted');setTimeout(()=>el.classList.remove('hinted'),1250);notify('반짝이는 곳을 찾아보세요!');
@@ -257,29 +268,61 @@ $('#wordFilters').addEventListener('click',e=>{const b=e.target.closest('[data-f
 $('#wordCard').addEventListener('pointerdown',e=>{if(wordBusy)return;swipeStart={x:e.clientX,y:e.clientY}});
 $('#wordCard').addEventListener('pointerup',e=>{if(wordBusy||!swipeStart)return;const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;swipeStart=null;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.3){swipeSuppressed=true;stepWord(dx<0?1:-1);setTimeout(()=>swipeSuppressed=false,380)}});
 $('#wordCard').addEventListener('pointercancel',()=>swipeStart=null);
-// --- Doah Play v0.4 premium interactive storybook (original, generated art) ---
+// --- Doah Play v0.5 premium interactive storybook (original, generated art) ---
 const STORY=[
- {title:'엄마 돼지의 부탁',text:'옛날 옛날, 푸른 언덕에 아기돼지 삼형제가 살았어요. 어느 날 엄마 돼지가 말했어요. “얘들아, 이제 너희만의 집을 만들어 보렴!” 아기돼지들은 씩씩하게 대답했지요. “네, 엄마!”',mood:'봄날의 따뜻한 시작'},
- {title:'첫째의 폭신폭신 짚집',text:'첫째 돼지는 노랗고 폭신한 짚을 발견했어요. 사각사각, 바스락바스락! 짚을 한 아름 모아 집을 뚝딱 지었답니다. “야호! 내 집 완성!” 하지만 바람이 불 때마다 짚집이 살랑살랑 흔들렸어요.',mood:'햇살 아래 즐거운 집짓기'},
- {title:'둘째의 나뭇가지 집',text:'둘째 돼지는 숲에서 길쭉한 나뭇가지를 모았어요. 톡톡, 딱딱, 뚝딱뚝딱! 가지를 세우고 지붕까지 얹으니 집이 완성되었어요. “정말 멋지지?” 그런데 바람이 불자 집이 삐걱삐걱 흔들렸답니다.',mood:'숲속에서 뚝딱뚝딱'},
- {title:'셋째의 단단한 벽돌집',text:'셋째 돼지는 빨갛고 단단한 벽돌을 골랐어요. 영차, 영차! 무거워도 차근차근 쌓아 올렸답니다. 드디어 문과 창문까지 달린 튼튼한 벽돌집이 완성되었어요. 그런데 숲속에서 누군가 슬금슬금 다가오고 있었어요.',mood:'차근차근, 튼튼하게'},
- {title:'늑대와 첫째의 짚집',text:'배고픈 늑대가 첫째 돼지의 짚집에 나타났어요. “어서 문을 열어라!” “절대로 안 열어줄 거예요!” 늑대가 후우우 하고 바람을 불자 짚집이 와르르 무너졌어요. 첫째 돼지는 얼른 둘째의 집으로 달려갔답니다.',mood:'후우우! 바람이 불어요'},
- {title:'늑대와 둘째의 나뭇가지 집',text:'첫째와 둘째 돼지는 나뭇가지 집에 숨었어요. 하지만 늑대가 쿵쿵쿵 따라왔지요. “문을 열어라!” “싫어요!” 늑대가 후우우 하고 바람을 불자 나뭇가지가 우르르 무너졌어요. 두 돼지는 셋째의 벽돌집으로 달려갔어요.',mood:'쿵쿵! 와르르!'},
- {title:'벽돌집은 끄떡없어요!',text:'세 돼지는 튼튼한 벽돌집 안으로 들어갔어요. 늑대가 있는 힘껏 후우우! 불고 또 불었어요. 하지만 벽돌집은 끄떡도 하지 않았지요. “어라? 이럴 리가 없는데!” 늑대는 지쳐서 숲으로 돌아가고 말았답니다.',mood:'튼튼한 벽돌집의 승리'},
- {title:'삼형제의 행복한 하루',text:'늑대가 떠나자 돼지 삼형제는 서로를 꼭 안아주었어요. “우리 함께라서 정말 다행이야!” 서로 돕고, 서두르지 않고 정성껏 하는 것이 중요하다는 걸 배웠답니다. 도아야, 이야기가 재미있었니? 꿀꿀꿀! 끝!',mood:'웃음과 사랑 가득한 집'}
+ {title:'엄마 돼지의 부탁',text:'푸른 언덕에 아기돼지 삼형제가 살았어요. 엄마 돼지는 이제 각자 멋진 집을 지어 보라고 말했지요. 돼지들은 신나게 대답하고 모험을 시작했어요!',art:1,music:1,kind:'meadow',chapter:'happy'},
+ {title:'첫째의 폭신한 짚집',text:'첫째는 폭신한 짚을 발견했어요. 사각사각, 바스락바스락! 금방 짚집을 완성했지만 바람에 살랑살랑 흔들렸답니다.',art:2,music:2,kind:'straw',chapter:'happy'},
+ {title:'나뭇가지를 발견한 둘째',text:'둘째 돼지는 숲속에서 길쭉한 나뭇가지를 발견했어요. 튼튼한 집을 만들 생각에 설레서 가지를 하나씩 모았어요.',art:3,music:3,kind:'wood',chapter:'happy'},
+ {title:'둘째의 나무집 완성',text:'톡톡! 딱딱! 나뭇가지를 묶고 지붕을 올렸어요. “야호! 내 집도 완성이야!” 그러나 바람에 삐걱삐걱 흔들렸지요.',art:3,music:3,kind:'wood',chapter:'happy'},
+ {title:'셋째가 고른 빨간 벽돌',text:'셋째는 무겁지만 단단한 벽돌을 골랐어요. “영차! 영차!” 벽돌을 하나씩 옮기며 정성껏 집을 짓기 시작했어요.',art:4,music:4,kind:'brick',chapter:'happy'},
+ {title:'튼튼한 벽돌집 완성',text:'벽돌을 차곡차곡 올리고 문과 창문도 달았어요. 오래 걸렸지만 드디어 튼튼한 집이 완성되었답니다. 그런데 숲에서 누군가 다가오고 있었어요.',art:4,music:4,kind:'brick',chapter:'happy'},
+ {title:'늑대가 짚집을 찾아왔어요',text:'숲에서 늑대가 나타났어요. 킁킁, 어디선가 맛있는 냄새가 나요! 늑대는 첫째 돼지의 짚집 앞에서 문을 열라고 외쳤어요.',art:5,music:5,kind:'straw',chapter:'danger'},
+ {title:'후우! 짚집이 와르르',text:'늑대가 후우우! 힘껏 불었어요. 휘잉! 짚집이 흔들리더니 와르르 무너졌어요. 첫째 돼지는 둘째의 나무집으로 도망쳤답니다.',art:5,music:5,kind:'straw',chapter:'danger'},
+ {title:'늑대가 둘째 집까지 따라왔어요',text:'첫째 돼지는 헉헉 숨을 몰아쉬며 나무집에 도착했어요. 둘째가 문을 열어 주었지만 늑대가 쿵쿵쿵 따라왔어요.',art:6,music:6,kind:'wood',chapter:'danger'},
+ {title:'나무집도 무너졌어요',text:'“문을 열어라!” “싫어요!” 늑대가 다시 후우우 하고 불자 우지끈! 나무집까지 무너졌어요. 돼지 둘은 벽돌집으로 달렸어요.',art:6,music:6,kind:'wood',chapter:'danger'},
+ {title:'벽돌집으로 무사히!',text:'첫째와 둘째가 셋째의 벽돌집으로 뛰어왔어요. 셋째가 어서 들어오라며 문을 열어 주었어요. 그런데 늑대도 곧 나타났답니다.',art:7,music:7,kind:'brick',chapter:'danger'},
+ {title:'벽돌집은 끄떡없어요!',text:'늑대가 후우우! 또 후우우! 바람을 불었지만 벽돌집은 끄떡없었어요. 지친 늑대는 결국 숲으로 돌아갔답니다.',art:7,music:7,kind:'brick',chapter:'happy'},
+ {title:'서로를 꼭 안아주었어요',text:'늑대가 떠나자 세 돼지는 휴우! 안도의 한숨을 쉬었어요. 첫째와 둘째는 튼튼한 집을 지어 준 셋째를 꼭 껴안고 고맙다고 했지요.',art:8,music:8,kind:'brick',chapter:'happy'},
+ {title:'빙글빙글, 꿀꿀꿀!',text:'돼지 삼형제는 손을 잡고 빙글빙글 춤췄어요. 함께 도우며 정성을 다하는 것이 중요하다는 걸 배웠답니다.',art:8,music:8,kind:'brick',chapter:'happy'},
+ {title:'도아야, 행복한 꿈 꾸렴',text:'돼지 삼형제는 서로를 아끼며 행복하게 살았답니다. 도아야, 이야기가 재미있었니? 언제나 씩씩하고 서로 돕는 따뜻한 아이로 자라길 바라요. 끝!',art:8,music:8,kind:'brick',chapter:'happy'}
 ];
-const HOTSPOTS=[
- [ ['pig',30,54,50,38,'아기돼지 삼형제'],['tree',81,18,17,47,'나무'],['bird',8,18,18,15,'새'] ],
- [ ['pig',63,56,32,41,'첫째 돼지'],['window',32,44,17,16,'짚집 창문'],['house',19,28,42,48,'짚집'],['flower',8,81,17,13,'꽃'],['tree',84,9,16,40,'나무'] ],
- [ ['pig',54,56,33,40,'둘째 돼지'],['window',20,47,16,15,'나무집 창문'],['house',7,34,46,48,'나뭇가지 집'],['tree',84,15,16,44,'나무'],['bird',57,20,16,14,'새'] ],
- [ ['pig',55,55,35,42,'셋째 돼지'],['window',35,44,17,15,'벽돌집 창문'],['house',12,24,48,50,'벽돌집'],['flower',7,79,18,12,'꽃'],['tree',85,14,15,40,'나무'] ],
- [ ['wolf',14,35,34,43,'늑대'],['pig',73,67,23,26,'첫째 돼지'],['house',53,39,46,50,'무너지는 짚집'],['wind',43,40,22,16,'바람'],['tree',80,8,18,39,'나무'] ],
- [ ['wolf',10,35,34,41,'늑대'],['pig',75,62,24,29,'아기돼지'],['house',50,39,47,49,'흔들리는 나무집'],['wind',40,40,22,18,'바람'],['tree',84,11,15,38,'나무'] ],
- [ ['wolf',66,42,32,43,'늑대'],['pig',22,57,35,34,'아기돼지들'],['window',36,42,18,16,'벽돌집 창문'],['house',11,25,49,60,'튼튼한 벽돌집'],['wind',53,43,18,15,'바람'],['tree',85,15,15,35,'나무'] ],
- [ ['pig',21,52,64,42,'아기돼지 삼형제'],['window',72,28,19,19,'집 안의 창문'],['flower',80,79,14,14,'꽃'],['bird',12,18,15,15,'새'],['teapot',69,69,18,14,'찻주전자'] ]
+const BASE_HOTSPOTS=[
+ [['pig',30,54,50,38,'아기돼지 삼형제'],['tree',81,18,17,47,'나무'],['bird',8,18,18,15,'새']],
+ [['pig',63,56,32,41,'첫째 돼지'],['window',32,44,17,16,'짚집 창문'],['house',19,28,42,48,'짚집'],['flower',8,81,17,13,'꽃'],['tree',84,9,16,40,'나무']],
+ [['pig',54,56,33,40,'둘째 돼지'],['window',20,47,16,15,'나무집 창문'],['house',7,34,46,48,'나무집'],['tree',84,15,16,44,'나무'],['bird',57,20,16,14,'새']],
+ [['pig',55,55,35,42,'셋째 돼지'],['window',35,44,17,15,'벽돌집 창문'],['house',12,24,48,50,'벽돌집'],['flower',7,79,18,12,'꽃'],['tree',85,14,15,40,'나무']],
+ [['wolf',14,35,34,43,'늑대'],['pig',73,67,23,26,'첫째 돼지'],['house',53,39,46,50,'짚집'],['wind',43,40,22,16,'바람'],['tree',80,8,18,39,'나무']],
+ [['wolf',10,35,34,41,'늑대'],['pig',75,62,24,29,'아기돼지'],['house',50,39,47,49,'나무집'],['wind',40,40,22,18,'바람'],['tree',84,11,15,38,'나무']],
+ [['wolf',66,42,32,43,'늑대'],['pig',22,57,35,34,'아기돼지들'],['window',36,42,18,16,'벽돌집 창문'],['house',11,25,49,60,'벽돌집'],['wind',53,43,18,15,'바람'],['tree',85,15,15,35,'나무']],
+ [['pig',21,52,64,42,'아기돼지 삼형제'],['window',72,28,19,19,'창문'],['flower',80,79,14,14,'꽃'],['bird',12,18,15,15,'새'],['teapot',69,69,18,14,'찻주전자']]
 ];
+const HOTSPOTS=STORY.map((s,i)=>{
+ const allowed=[['pig','tree','bird'],['pig','house','window','flower'],['pig','tree','bird'],['house','window','pig'],['pig','tree','flower'],['house','window','pig'],['wolf','pig','tree'],['wolf','house','wind'],['wolf','pig','tree'],['wolf','house','wind'],['wolf','pig','window'],['wolf','house','wind','window'],['pig','window','bird'],['pig','flower','teapot'],['pig','flower','teapot']][i];
+ return BASE_HOTSPOTS[s.art-1].filter(h=>allowed.includes(h[0]));
+});
+const PAGE_MESSAGES={
+  0:{pig:'엄마, 다녀올게요! 꿀꿀!',tree:'봄바람에 나뭇잎이 살랑!',bird:'짹짹! 즐거운 아침!'},
+  1:{pig:'헤헤! 첫째가 짚을 모아요',house:'사각사각! 폭신한 짚집이에요',window:'짚집 안을 살펴봐요',flower:'꽃이 활짝 피었어요!'},
+  2:{pig:'둘째가 가지를 찾았어요!',tree:'나무에서 가지가 톡톡!',bird:'새들이 노래해요'},
+  3:{pig:'야호! 내 집 완성!',house:'뚝딱뚝딱! 나무집을 지었어요',window:'나무집 안을 볼까요?'},
+  4:{pig:'영차! 벽돌이 무거워요',tree:'숲의 나무가 흔들려요',flower:'벽돌집 옆 작은 꽃'},
+  5:{pig:'드디어 집을 완성했어요!',house:'단단한 벽돌을 차곡차곡!',window:'아늑한 벽돌집 안이에요'},
+  6:{wolf:'크앙! 늑대가 나타났어요!',pig:'으악! 늑대다!',tree:'나뭇잎이 부스럭'},
+  7:{wolf:'후우우! 바람을 불어요!',house:'와르르! 짚집이 무너졌어요',wind:'휘이잉! 짚이 날아가요!'},
+  8:{wolf:'쿵쿵! 늑대가 따라왔어요',pig:'형아, 어서 들어와!',tree:'나뭇잎이 휘날려요'},
+  9:{wolf:'이번에도 후우우!',house:'우지끈! 나무집이 무너졌어요',wind:'바람에 나뭇가지가 날아가요!'},
+ 10:{wolf:'늑대가 또 왔어요!',pig:'어서 들어와! 여기 안전해!',window:'튼튼한 집 안이 보여요'},
+ 11:{wolf:'아이고, 힘들어! 늑대가 지쳤어요',house:'튼튼한 벽돌집은 끄떡없어요!',wind:'후우우! 그래도 괜찮아요',window:'안에서 돼지들이 지켜봐요'},
+ 12:{pig:'형아들, 무사해서 다행이야!',window:'이제 집 안은 포근해요',bird:'짹짹! 모두 안전해요'},
+ 13:{pig:'빙글빙글, 꿀꿀꿀!',flower:'꽃잎도 춤을 춰요',teapot:'따뜻한 차를 준비했어요'},
+ 14:{pig:'도아야, 사랑해! 꿀꿀!',flower:'행복한 꽃이 피었어요',teapot:'따뜻한 차로 마무리해요'}
+};
 const actionIcons={pig:'🐽',wolf:'🐺',window:'🪟',house:'🏠',wind:'💨',tree:'🍃',flower:'🌸',bird:'🐦',teapot:'🫖'};
-let page=0,storyPageToken=0,storyOpenWindow=null,sceneTimer=0;
+let page=0,storyPageToken=0,storyOpenWindow=null,sceneTimer=0,turnBusy=false,turnTimer=null,bookSwipeStart=null;
+const activePageTimers=new Set();
+function pageDelay(cb,ms){const id=setTimeout(()=>{activePageTimers.delete(id);cb()},ms);activePageTimers.add(id);return id}
+function cleanupPageEffects(){for(const id of activePageTimers)clearTimeout(id);activePageTimers.clear();clearTimeout(sceneTimer);closeWindow();closeWolfPeek();const st=$('#storyStage');st.classList.remove('wind-shake','brick-resists','flicker','page-turning');st.querySelectorAll('.book-particle,.book-action-bubble,.book-page-sheet').forEach(el=>el.remove());}
+
 const storyNarration=$('#narrationAudio');
 let narrationSerial=0;
 function storyFx(action){
@@ -330,7 +373,7 @@ function insideRoomSvg(kind){
 }
 function openWindow(hotspot){
   if(storyOpenWindow){closeWindow();return}
-  const stage=$('#storyStage');const kind=page===1?'straw':page===2||page===5?'wood':'brick';
+  const stage=$('#storyStage');const kind=STORY[page].kind==='straw'?'straw':STORY[page].kind==='wood'?'wood':'brick';
   const el=document.createElement('div');el.className='window-detail-panel';el.setAttribute('role','dialog');el.setAttribute('aria-label','집 안을 보여주는 열린 창문');
   const x=Number(hotspot.style.left.replace('%','')),y=Number(hotspot.style.top.replace('%',''));
   el.style.left=Math.max(4,Math.min(56,x-4))+'%';el.style.top=Math.max(6,Math.min(57,y-14))+'%';
@@ -343,33 +386,33 @@ function wolfZoom(){
   const overlay=$('#storyOverlay');overlay.innerHTML='<div class="wolf-cameo"><img src="wolf-peek.webp" alt="늑대가 불쑥 나타나요"/><span>크앙! 후우우!</span></div>';
   overlay.classList.add('active');
   const token=storyPageToken;
-  setTimeout(()=>{if(token===storyPageToken)closeWolfPeek()},1250);
+  pageDelay(()=>{if(token===storyPageToken)closeWolfPeek()},1250);
 }
 function windAction(){
   const stage=$('#storyStage');const house=stage.querySelector('.story-illustration');
   stage.classList.remove('wind-shake','brick-resists');void stage.offsetWidth;
-  stage.classList.add(page===6?'brick-resists':'wind-shake');
-  makeParticles(page===4?'straw':page===5?'wood':'leaf',60,50,15);
-  showActionMessage(page===6?'튼튼한 벽돌집은 끄떡없어요!':'후우우! 바람이 휘잉!',51,43);
-  clearTimeout(sceneTimer);sceneTimer=setTimeout(()=>stage.classList.remove('wind-shake','brick-resists'),1150);
+  stage.classList.add(STORY[page].kind==='brick'?'brick-resists':'wind-shake');
+  makeParticles(STORY[page].kind==='straw'?'straw':STORY[page].kind==='wood'?'wood':'leaf',60,50,15);
+  showActionMessage(PAGE_MESSAGES[page].wind || PAGE_MESSAGES[page].house || '휘이잉! 바람이 불어요!',51,43);
+  clearTimeout(sceneTimer);sceneTimer=pageDelay(()=>stage.classList.remove('wind-shake','brick-resists'),1150);
 }
 function storyTap(action,hotspot){
   audioUnlock();if(action==='window'){openWindow(hotspot);return}
   storyFx(action);
   const x=parseFloat(hotspot.style.left)+4,y=parseFloat(hotspot.style.top)+3;
-  if(action==='pig') {showActionMessage('꿀꿀! 안녕, 도아야!',x,y);makeParticles('sparkle',x,y,5)}
-  else if(action==='wolf'){wolfZoom();showActionMessage('크앙! 늑대가 나타났어요!',x,y)}
+  if(action==='pig') {showActionMessage(PAGE_MESSAGES[page].pig||'꿀꿀!',x,y);makeParticles('sparkle',x,y,5)}
+  else if(action==='wolf'){wolfZoom();showActionMessage(PAGE_MESSAGES[page].wolf||'크앙!',x,y)}
   else if(action==='wind'){windAction()}
-  else if(action==='house'){if(page>=4&&page<=6){windAction()}else {showActionMessage('튼튼하게 뚝딱뚝딱!',x,y);makeParticles('sparkle',x,y,7)}}
-  else if(action==='tree'){showActionMessage('사르르~ 나뭇잎이 떨어져요',x,y);makeParticles('leaf',x,y,13);hotspot.classList.add('jiggle');setTimeout(()=>hotspot.classList.remove('jiggle'),650)}
-  else if(action==='flower'){showActionMessage('꽃이 활짝 피었어요!',x,y);makeParticles('petal',x,y,11)}
-  else if(action==='bird'){showActionMessage('짹짹! 새가 노래해요',x,y);makeParticles('sparkle',x,y,8)}
-  else if(action==='teapot'){showActionMessage('따뜻한 차가 준비됐어요!',x,y);makeParticles('sparkle',x,y,8)}
+  else if(action==='house'){if([7,9,11].includes(page)){windAction()}else {showActionMessage(PAGE_MESSAGES[page].house||'뚝딱뚝딱!',x,y);makeParticles('sparkle',x,y,7)}}
+  else if(action==='tree'){showActionMessage(PAGE_MESSAGES[page].tree||'나뭇잎이 살랑!',x,y);makeParticles('leaf',x,y,13);hotspot.classList.add('jiggle');pageDelay(()=>hotspot.classList.remove('jiggle'),650)}
+  else if(action==='flower'){showActionMessage(PAGE_MESSAGES[page].flower||'꽃이 활짝 피었어요!',x,y);makeParticles('petal',x,y,11)}
+  else if(action==='bird'){showActionMessage(PAGE_MESSAGES[page].bird||'짹짹!',x,y);makeParticles('sparkle',x,y,8)}
+  else if(action==='teapot'){showActionMessage(PAGE_MESSAGES[page].teapot||'따뜻한 차예요!',x,y);makeParticles('sparkle',x,y,8)}
 }
 function renderBook(){
-  storyPageToken++;closeWindow();closeWolfPeek();clearTimeout(sceneTimer);
-  const item=STORY[page],stage=$('#storyStage');stage.classList.remove('wind-shake','brick-resists');
-  stage.innerHTML=`<img class="story-illustration" src="story-art-${page+1}.webp" alt="${item.title}" draggable="false"><span class="story-shimmer" aria-hidden="true"></span>`;
+  storyPageToken++;cleanupPageEffects();
+  const item=STORY[page],stage=$('#storyStage');stage.classList.remove('wind-shake','brick-resists');stage.dataset.chapter=item.chapter;
+  stage.innerHTML=`<img class="story-illustration" src="story-art-${item.art}.webp" alt="${item.title}" draggable="false"><span class="story-shimmer" aria-hidden="true"></span>`;
   for(const [action,x,y,w,h,label] of HOTSPOTS[page]){
     const hotspot=document.createElement('button');hotspot.type='button';hotspot.className='story-hotspot';hotspot.setAttribute('aria-label',label+' 눌러보기');
     hotspot.dataset.action=action;hotspot.style.cssText=`left:${x}%;top:${y}%;width:${w}%;height:${h}%;`;
@@ -378,9 +421,9 @@ function renderBook(){
   }
   $('#pageHeading').textContent=item.title;$('#storyText').textContent=item.text;
   $('#pageNumber').textContent=`${page+1} / ${STORY.length}`;
-  $('#bookProgress').textContent=STORY.map((_,i)=>i===page?'●':'○').join(' ');
+  $('#bookProgress').textContent=`${page+1} / ${STORY.length}장`;
   $('#prevPage').disabled=page===0;$('#nextPage').disabled=page===STORY.length-1;
-  $('#bookActionCaption').textContent='✨ 반짝이는 그림을 눌러보세요 · 창문을 열면 집 안이 보여요';
+  $('#bookActionCaption').textContent='✨ 그림을 톡톡 눌러보세요 · 좌우로 밀어 책장을 넘겨요';
   $('#speechHint').textContent='직접 녹음한 이야기를 들려드릴게요. 다른 그림을 눌러도 낭독은 계속돼요.';
 }
 function readPage(){
@@ -395,11 +438,34 @@ function readPage(){
   const p=storyNarration.play();if(p?.catch)p.catch(()=>{if(view==='books'&&token===storyPageToken&&serial===narrationSerial){duckAudio(false);$('#speechHint').textContent='▶ 다시 읽기를 눌러 음성을 시작해 주세요.'}});
 }
 function toPage(delta){
-  const next=Math.max(0,Math.min(STORY.length-1,page+delta));if(next===page)return;
-  stopVoice();page=next;renderBook();playForView();readPage();
-  // iPad/Android: keep page top near the illustration, preserving direct interaction.
+  if(turnBusy||view!=='books')return;
+  const next=page+delta;if(next<0||next>=STORY.length)return;
+  const stage=$('#storyStage');const oldArt=STORY[page].art,targetArt=STORY[next].art;
+  turnBusy=true;stopVoice();cleanupPageEffects();stage.classList.add('page-turning');
+  const sheet=document.createElement('div');sheet.className=`book-page-sheet ${delta>0?'forward':'backward'}`;
+  sheet.innerHTML=`<img src="story-art-${delta>0?oldArt:targetArt}.webp" alt="책장 넘김" draggable="false">`;
+  if(delta>0){page=next;renderBook()}
+  stage.append(sheet);stage.classList.add('page-turning');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>sheet.classList.add('turning')));
+  const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?180:650;
+  clearTimeout(turnTimer);turnTimer=setTimeout(()=>{
+    sheet.remove();if(delta<0){page=next;renderBook()}
+    stage.classList.remove('page-turning');turnBusy=false;
+    if(view==='books'){playForView();readPage()}
+  },duration);
   document.querySelector('.book-heading')?.scrollIntoView({block:'start',behavior:'smooth'});
 }
+const storyStage=$('#storyStage');
+storyStage.addEventListener('pointerdown',e=>{
+ if(e.target.closest('.story-hotspot,.window-close')||turnBusy){bookSwipeStart=null;return}
+ bookSwipeStart={id:e.pointerId,x:e.clientX,y:e.clientY};
+});
+storyStage.addEventListener('pointerup',e=>{
+ if(!bookSwipeStart||bookSwipeStart.id!==e.pointerId)return;
+ const dx=e.clientX-bookSwipeStart.x,dy=e.clientY-bookSwipeStart.y;bookSwipeStart=null;
+ if(Math.abs(dx)>58&&Math.abs(dx)>Math.abs(dy)*1.2){e.preventDefault();audioUnlock();toPage(dx<0?1:-1)}
+});
+storyStage.addEventListener('pointercancel',()=>bookSwipeStart=null);
 $('#prevPage').addEventListener('click',()=>toPage(-1));$('#nextPage').addEventListener('click',()=>toPage(1));
 $('#readPageButton').addEventListener('click',()=>{audioUnlock();readPage()});
 

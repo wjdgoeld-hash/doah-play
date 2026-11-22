@@ -1,0 +1,122 @@
+[
+  {
+    "page": 1,
+    "source_recording": 1,
+    "source_start_sec": 0,
+    "source_end_sec": 34.76,
+    "duration_sec": 34.76,
+    "file": "narration-01.mp3"
+  },
+  {
+    "page": 2,
+    "source_recording": 2,
+    "source_start_sec": 0,
+    "source_end_sec": 39.73,
+    "duration_sec": 39.73,
+    "file": "narration-02.mp3"
+  },
+  {
+    "page": 3,
+    "source_recording": 3,
+    "source_start_sec": 0,
+    "source_end_sec": 23.75,
+    "duration_sec": 23.75,
+    "file": "narration-03.mp3"
+  },
+  {
+    "page": 4,
+    "source_recording": 3,
+    "source_start_sec": 23.75,
+    "source_end_sec": 45.86,
+    "duration_sec": 22.11,
+    "file": "narration-04.mp3"
+  },
+  {
+    "page": 5,
+    "source_recording": 4,
+    "source_start_sec": 0,
+    "source_end_sec": 27.55,
+    "duration_sec": 27.55,
+    "file": "narration-05.mp3"
+  },
+  {
+    "page": 6,
+    "source_recording": 4,
+    "source_start_sec": 27.55,
+    "source_end_sec": 58.88,
+    "duration_sec": 31.33,
+    "file": "narration-06.mp3"
+  },
+  {
+    "page": 7,
+    "source_recording": 5,
+    "source_start_sec": 0,
+    "source_end_sec": 33.35,
+    "duration_sec": 33.35,
+    "file": "narration-07.mp3"
+  },
+  {
+    "page": 8,
+    "source_recording": 5,
+    "source_start_sec": 33.35,
+    "source_end_sec": 66.05,
+    "duration_sec": 32.7,
+    "file": "narration-08.mp3"
+  },
+  {
+    "page": 9,
+    "source_recording": 6,
+    "source_start_sec": 0,
+    "source_end_sec": 39.9,
+    "duration_sec": 39.9,
+    "file": "narration-09.mp3"
+  },
+  {
+    "page": 10,
+    "source_recording": 6,
+    "source_start_sec": 39.9,
+    "source_end_sec": 76.75,
+    "duration_sec": 36.84,
+    "file": "narration-10.mp3"
+  },
+  {
+    "page": 11,
+    "source_recording": 7,
+    "source_start_sec": 0,
+    "source_end_sec": 46.9,
+    "duration_sec": 46.9,
+    "file": "narration-11.mp3"
+  },
+  {
+    "page": 12,
+    "source_recording": 7,
+    "source_start_sec": 46.9,
+    "source_end_sec": 86.84,
+    "duration_sec": 39.94,
+    "file": "narration-12.mp3"
+  },
+  {
+    "page": 13,
+    "source_recording": 8,
+    "source_start_sec": 0,
+    "source_end_sec": 28.8,
+    "duration_sec": 28.8,
+    "file": "narration-13.mp3"
+  },
+  {
+    "page": 14,
+    "source_recording": 8,
+    "source_start_sec": 28.8,
+    "source_end_sec": 58.2,
+    "duration_sec": 29.4,
+    "file": "narration-14.mp3"
+  },
+  {
+    "page": 15,
+    "source_recording": 8,
+    "source_start_sec": 58.2,
+    "source_end_sec": 88.93,
+    "duration_sec": 30.73,
+    "file": "narration-15.mp3"
+  }
+]

@@ -1,11 +1,11 @@
-/* Doah Play v0.4 - offline, cache-first static assets; network-first navigation. */
-const CACHE='doah-play-v04-20261121';
+/* Doah Play v0.5 - offline, cache-first static assets; network-first navigation. */
+const CACHE='doah-play-v05-20261122';
 const ASSETS=[
  './','./index.html','./app.js','./style.css','./manifest.webmanifest',
  './icon.svg','./icon-180.png','./icon-192.png','./icon-512.png',
- './pororo-snow.jpg','./pororo-picnic.jpg','./pororo-ocean.jpg',
+ ...Array.from({length:5},(_,i)=>`./friends-${i+1}.jpg`),
  ...Array.from({length:8},(_,i)=>`./story-art-${i+1}.webp`), './wolf-peek.webp',
- ...Array.from({length:8},(_,i)=>`./narration-${String(i+1).padStart(2,'0')}.mp3`),
+ ...Array.from({length:15},(_,i)=>`./narration-${String(i+1).padStart(2,'0')}.mp3`),
  './gentle-piano-medley.mp3',
  ...Array.from({length:8},(_,i)=>`./story-${i+1}.mp3`)
 ];

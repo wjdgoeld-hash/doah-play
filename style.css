@@ -43,3 +43,33 @@
 @media(prefers-reduced-motion:reduce){.book-stage .story-illustration,.book-stage .story-shimmer,.story-hotspot-marker{animation:none}.book-particle{animation-duration:.3s}.window-detail-panel{transition:none}.window-detail-panel.open .shutter{transition:none}}
 
 .story-hotspot[data-action="window"]{z-index:5}.story-hotspot[data-action="pig"],.story-hotspot[data-action="wolf"]{z-index:3}
+
+/* v0.5: gentle paper-page flip, on-page visual effects, touch-safe toddler UX */
+#storyStage{perspective:1400px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+#storyStage.page-turning .story-hotspot{pointer-events:none}
+.book-page-sheet{position:absolute;inset:0;z-index:48;pointer-events:none;transform-style:preserve-3d;backface-visibility:hidden;transform-origin:left center;background:#fff;box-shadow:7px 6px 22px #4d3d3655;overflow:hidden;border-radius:0 12px 12px 0}
+.book-page-sheet>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.book-page-sheet.forward{transform:rotateY(0);transition:transform .62s cubic-bezier(.25,.65,.29,1)}
+.book-page-sheet.forward.turning{transform:rotateY(-168deg)}
+.book-page-sheet.backward{transform:rotateY(-168deg);transition:transform .62s cubic-bezier(.22,.63,.32,1)}
+.book-page-sheet.backward.turning{transform:rotateY(0)}
+.book-page-sheet::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#2d22494d,transparent 31%,transparent 75%,#47304a28);opacity:.6;pointer-events:none}
+.book-interaction-caption{transition:opacity .2s}
+.book-stage[data-chapter="danger"]{box-shadow:0 5px 20px #57455a50}
+.book-stage[data-chapter="happy"]{box-shadow:0 5px 21px #ffb96980}
+.book-stage .story-illustration{transition:filter .35s ease}
+.book-stage.flicker .story-illustration{filter:brightness(1.14) saturate(1.2)}
+.book-stage .story-hotspot:focus-visible{outline:3px solid #ffffffc0}
+#bookProgress{font-variant-numeric:tabular-nums;letter-spacing:0.04em;min-width:66px}
+.puzzle-finish{max-width:540px;margin:12px auto;background:linear-gradient(145deg,#fff6d4,#fce9fc);border:4px solid white;box-shadow:var(--shadow);border-radius:24px;padding:22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:11px}
+.puzzle-finish[hidden]{display:none}
+.puzzle-finish>div{font-size:64px;animation:bob 2s infinite alternate}
+.puzzle-finish strong{font-size:23px}
+.puzzle-finish p{color:#867c93;margin:0 0 4px}
+.puzzle-finish button{background:white;border-radius:17px;padding:12px 19px;font-weight:900;margin:4px}
+@media(prefers-reduced-motion:reduce){.book-page-sheet{transition-duration:0.12s!important}}
+/* Show the complete illustrated page rather than cropping the top and bottom of portrait story art. */
+.book-stage{width:min(100%,565px);max-width:565px;aspect-ratio:3/4;margin:0 auto}
+.book-stage .story-illustration{object-fit:contain}
+.book-page-sheet>img{object-fit:contain}
+@media(min-width:700px){.book-stage{aspect-ratio:3/4}}

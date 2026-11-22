@@ -10,14 +10,14 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-180.png">
-  <link rel="stylesheet" href="style.css?v=04">
+  <link rel="stylesheet" href="style.css?v=05">
   <title>Doah Play · 도아의 놀이 세상</title>
 </head>
 <body>
 <div class="app-shell" id="app">
   <header class="topbar">
     <button id="homeButton" class="head-action" aria-label="처음 화면으로" hidden>⌂ <span>홈</span></button>
-    <div class="wordmark">Doah <span>Play</span><small>v0.4</small></div>
+    <div class="wordmark">Doah <span>Play</span><small>v0.5</small></div>
     <div class="top-actions">
       <button id="soundButton" class="head-action" aria-label="배경음악 켜기 또는 끄기" aria-pressed="true">♫ <span>음악</span></button>
       <button id="parentsButton" class="head-action parents" aria-label="부모님 설정">⚙ <span>부모님</span></button>
@@ -33,7 +33,7 @@
       </div>
       <div class="activity-grid">
         <button class="activity a-draw" data-open="draw"><span class="activity-art" aria-hidden="true">🎨</span><span>그림 그리기</span><small>쓱쓱, 반짝반짝</small></button>
-        <button class="activity a-puzzle" data-open="puzzle"><span class="activity-art" aria-hidden="true">🧩</span><span>뽀로로 퍼즐</span><small>조각을 쏙!</small></button>
+        <button class="activity a-puzzle" data-open="puzzle"><span class="activity-art" aria-hidden="true">🧩</span><span>동물 친구들 퍼즐</span><small>조각을 쏙!</small></button>
         <button class="activity a-words" data-open="words"><span class="activity-art" aria-hidden="true">🐻</span><span>낱말 카드</span><small>한국어와 영어</small></button>
         <button class="activity a-books" data-open="books"><span class="activity-art" aria-hidden="true">📖</span><span>움직이는 그림책</span><small>아기돼지 삼형제</small></button>
       </div>
@@ -49,13 +49,13 @@
     </section>
 
     <section class="view" id="puzzle" aria-labelledby="puzzleTitle">
-      <div class="section-head"><div><p class="eyebrow">조각을 옮겨볼까요?</p><h2 id="puzzleTitle">🧩 뽀로로 퍼즐</h2></div><button id="newPuzzle" class="rounded-btn">다시 섞기 ↻</button></div>
-      <div class="scene-tabs" id="puzzleScenes"><button class="scene-tab is-selected" data-scene="0">⛄ 눈사람</button><button class="scene-tab" data-scene="1">🌷 소풍</button><button class="scene-tab" data-scene="2">⛵ 바다</button></div>
+      <div class="section-head"><div><p class="eyebrow">조각을 옮겨볼까요?</p><h2 id="puzzleTitle">🧩 동물 친구들 퍼즐</h2></div><button id="newPuzzle" class="rounded-btn">다시 섞기 ↻</button></div>
+      <div class="scene-tabs" id="puzzleScenes"><button class="scene-tab is-selected" data-scene="0">⛄ 눈놀이</button><button class="scene-tab" data-scene="1">🌷 소풍</button><button class="scene-tab" data-scene="2">⛵ 바다</button><button class="scene-tab" data-scene="3">🎄 겨울마을</button><button class="scene-tab" data-scene="4">🏝️ 해변</button></div>
       <div class="puzzle-help">아래 조각을 <strong>끌어서</strong> 위 그림의 제자리에 쏙! <span>조각을 누른 뒤 빈 칸을 눌러도 돼요.</span></div>
       <div class="puzzle-board" id="puzzleBoard" aria-label="8칸 그림 퍼즐"></div>
       <div class="puzzle-feedback" id="puzzleFeedback" role="status" aria-live="polite">어떤 조각부터 맞춰볼까요?</div>
       <div class="puzzle-tray" id="puzzleTray" aria-label="움직일 그림 조각"></div>
-      <div class="puzzle-bottom"><span id="puzzleCount">0 / 8개</span><button id="puzzleHint" class="rounded-btn">💡 힌트</button></div>
+      <div class="puzzle-finish" id="puzzleFinish" hidden><div>🌟🎉🌟</div><strong>도아야, 모든 퍼즐을 완성했어!</strong><p>친구들이 함께 박수 쳐요!</p><div><button id="restartPuzzles">처음부터 다시</button><button id="finishPuzzlesHome">홈으로 가기</button></div></div><div class="puzzle-bottom"><span id="puzzleCount">0 / 8개</span><button id="puzzleHint" class="rounded-btn">💡 힌트</button></div>
     </section>
 
     <section class="view" id="words" aria-labelledby="wordsTitle">
@@ -75,13 +75,13 @@
     </section>
 
     <section class="view book-view" id="books" aria-labelledby="booksTitle">
-      <div class="book-heading"><div><p class="eyebrow">톡톡! 움직이는 그림책</p><h2 id="booksTitle">🐷 아기돼지 삼형제</h2></div><span id="pageNumber" class="step-badge">1 / 8</span></div>
+      <div class="book-heading"><div><p class="eyebrow">톡톡! 움직이는 그림책</p><h2 id="booksTitle">🐷 아기돼지 삼형제</h2></div><span id="pageNumber" class="step-badge">1 / 15</span></div>
       <div class="book-stage" id="storyStage" aria-label="움직이는 이야기 그림. 반짝이는 표시를 눌러보세요"></div>
       <div class="book-interaction-caption" id="bookActionCaption" role="status" aria-live="polite">✨ 그림 속 반짝이는 곳을 눌러보세요</div>
       <div id="storyOverlay" class="story-overlay" aria-hidden="true"></div>
       <div class="book-copy"><div class="copy-head"><span id="pageHeading">어느 봄날</span><button id="readPageButton" class="listen-btn">🔊 다시 읽기</button></div><p id="storyText"></p><div id="speechHint" class="reading-status" aria-live="polite">페이지가 바뀌면 이야기를 읽어줘요.</div></div>
-      <div class="book-controls"><button id="prevPage">← 앞장</button><span id="bookProgress">● ○ ○ ○ ○ ○ ○ ○</span><button id="nextPage">뒷장 →</button></div>
-      <p class="gentle-tip">반짝이는 곳을 눌러 창문을 열고, 나무를 흔들고, 늑대의 바람을 만나보세요!</p>
+      <div class="book-controls"><button id="prevPage">← 앞장</button><span id="bookProgress">1 / 15장</span><button id="nextPage">뒷장 →</button></div>
+      <p class="gentle-tip">좌우로 밀면 책장이 넘어가요. 그림 속 반짝이는 곳을 눌러보세요!</p>
     </section>
 
     <section class="view" id="settings" aria-labelledby="settingsTitle">
@@ -89,7 +89,7 @@
       <div class="settings-panel"><label for="timeLimit">한 번에 사용하는 시간</label><select id="timeLimit"><option value="5">5분</option><option value="10">10분</option><option value="15">15분</option><option value="0">시간 제한 없음</option></select>
       <label for="musicVolume">배경 음악 소리</label><input id="musicVolume" type="range" min="0" max="40" value="18"><p class="field-note">말을 읽어줄 때는 음악 소리를 자동으로 낮춥니다.</p>
       <button id="restartSession" class="primary-btn">설정 저장하고 새 놀이 시작</button><p class="field-note">시간 제한은 앱 내부 안내 기능입니다. 기기 전체 사용을 차단하지는 않습니다.</p>
-      <p class="field-note">음악은 기존 찬양곡을 녹음·복제한 것이 아닌 새로 제작한 연주곡입니다. 그림 퍼즐은 별도 생성한 팬아트이며 공식 뽀로로 자료가 아닙니다.</p></div>
+      <p class="field-note">음악은 기존 찬양곡을 녹음·복제한 것이 아닌 새로 제작한 연주곡입니다. 퍼즐은 자체 제작한 오리지널 동물 친구들 그림입니다.</p></div>
     </section>
   </main>
 </div>
@@ -99,6 +99,6 @@
 <audio id="mainMusic" src="gentle-piano-medley.mp3" loop preload="auto"></audio>
 <audio id="storyMusic" loop preload="none"></audio>
 <audio id="narrationAudio" preload="none"></audio>
-<script defer src="app.js?v=04"></script>
+<script defer src="app.js?v=05"></script>
 </body>
 </html>
